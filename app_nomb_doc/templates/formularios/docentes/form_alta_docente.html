@@ -6,26 +6,43 @@
 <body>
     <br>
     <br>
-    <br>
     {%if forms.errors %}
       <div class="alert alert-danger" role="alert">
         A simple danger alert—check it out!
       </div>
     {% endif %}
-    
-    <div class="container" id="advanced-search-form">
-        <h2><b>ALTA DOCENTE</b></h2>
-    <form action="" method="POST"> {% csrf_token %}
-        {{formulario|crispy}}
-        <br>
-        <button type="submit" value='Guardar' class="btn btn-primary">Guardar</button>
-        <br>
-        {% if registrado %}
-        <div class="alert alert-success" role="alert">
-            El docente {{docente_registrado.apellido}}, {{docente_registrado.nombre}}, DNI {{docente_registrado.dni}} ha sido registrado existosamente.
+
+    <div class="container mt-18" style="width: 95%; font-size:14px">
+    <form action="" method="POST" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
+        <div class="card border-dark p-3"> 
+            <span class="btn btn-secondary mb-4">ALTA DOCENTE</span>   
+            <div class="row">
+                <div class="col-4">{{formulario.nombre|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.apellido|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.dni|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">{{formulario.titulo_grado|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.titulo_posgrado|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.hs_asignar|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">{{formulario.metodo_alta|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.fecha_alta|as_crispy_field}}</div>
+            </div>
+            <hr style="border: 1px solid black;">
+            <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Guardar'>Guardar</button>
         </div>
-        {% endif %}
     </form>
+    </div>
+            {% if registrado %}
+            <div class="mt-5">
+                <div class="alert alert-success" role="alert">
+                    El docente {{docente_registrado.apellido}}, {{docente_registrado.nombre}}, DNI {{docente_registrado.dni}} ha sido registrado existosamente.
+                </div>
+            </div>
+            {% endif %}
+
 </body>
 {% endblock %}
-</html>
+
