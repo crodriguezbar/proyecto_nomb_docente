@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"/></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css"/>
     <link rel="stylesheet" href={% static "css/style_inicio.css"%}/>
@@ -25,27 +26,26 @@
                     <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-folder"></i>Carreras</a>
                     <div class='dashboard-nav-dropdown-menu'>
                         <a href={% url 'altacarrera' %} class="dashboard-nav-dropdown-item">Alta</a>
+                        <a href="#!" class="dashboard-nav-dropdown-item">Edición</a>
                         <a href={% url 'reportealtacarerras' %} class="dashboard-nav-dropdown-item">Reportes</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">XXX</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">XXX</a>
                     </div>
                 </div>
                 <div class='dashboard-nav-dropdown'>
                     <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-users"></i>Docentes</a>
                     <div class='dashboard-nav-dropdown-menu'>
                         <a href={% url 'altadocente' %} class="dashboard-nav-dropdown-item">Alta</a>
+                        <a href="#" class="dashboard-nav-dropdown-item">Edición</a>
                         <a href="#" class="dashboard-nav-dropdown-item">Baja</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">Reportes</a>
-                        <a href={% url 'reportealtadocente' %} class="dashboard-nav-dropdown-item">Reporte por fecha de alta</a>
-                        <a href={% url 'reportealtadocentedni' %} class="dashboard-nav-dropdown-item">Reporte por DNI</a>     
+                        <a href="#" class="dashboard-nav-dropdown-item">Reportes</a>     
                     </div>
                 </div>
                 <div class='dashboard-nav-dropdown'>
                     <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-edit"></i>Comisiones</a>
                     <div class='dashboard-nav-dropdown-menu'>
                         <a href={% url 'altacomision' %} class="dashboard-nav-dropdown-item">Alta</a>
+                        <a href="#" class="dashboard-nav-dropdown-item">Edición</a>
+                        <a href="#" class="dashboard-nav-dropdown-item">Baja</a>
                         <a href={% url 'reportecomision' %} class="dashboard-nav-dropdown-item">Reportes</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">ZZZ</a>
                     </div>
                 </div>
                 <div class='dashboard-nav-dropdown'>

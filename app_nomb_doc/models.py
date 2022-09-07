@@ -5,12 +5,14 @@ from django.db import models
 class Docentes(models.Model):
     nombre=models.CharField(max_length=40)
     apellido=models.CharField(max_length=40)
-    dni=models.IntegerField()
+    dni=models.CharField(max_length=7)
+    fecha_nacimiento=models.DateField()
     titulo_grado=models.CharField(max_length=40)
     titulo_posgrado=models.CharField(max_length=40)
-    hs_asignar=models.IntegerField()
+    hs_asignar=models.CharField(max_length=2)
     metodo_alta=models.CharField(max_length=100)
     fecha_alta=models.DateField()
+    fecha_creacion=models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f'Nombre: {self.nombre} Apellido: {self.apellido} DNI: {self.dni} Alta: {self.fecha_alta}'

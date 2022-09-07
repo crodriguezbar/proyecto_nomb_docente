@@ -1,6 +1,5 @@
 {% extends 'static/inicio.html' %}
 {% load crispy_forms_tags %}
-{% load static %}
 {% block contenido %} 
 
 <body>
@@ -22,11 +21,12 @@
                 <div class="col-4">{{formulario.dni|as_crispy_field}}</div>
             </div>
             <div class="row">
+                <div class="col-4">{{formulario.fecha_nacimiento|as_crispy_field}}</div>
                 <div class="col-4">{{formulario.titulo_grado|as_crispy_field}}</div>
                 <div class="col-4">{{formulario.titulo_posgrado|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.hs_asignar|as_crispy_field}}</div>
             </div>
             <div class="row">
+                <div class="col-4">{{formulario.hs_asignar|as_crispy_field}}</div>
                 <div class="col-4">{{formulario.metodo_alta|as_crispy_field}}</div>
                 <div class="col-4">{{formulario.fecha_alta|as_crispy_field}}</div>
             </div>
