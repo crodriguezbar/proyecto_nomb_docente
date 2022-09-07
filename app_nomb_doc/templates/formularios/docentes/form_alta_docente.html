@@ -1,0 +1,31 @@
+{% extends 'static/inicio.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block contenido %} 
+
+<body>
+    <br>
+    <br>
+    <br>
+    {%if forms.errors %}
+      <div class="alert alert-danger" role="alert">
+        A simple danger alert—check it out!
+      </div>
+    {% endif %}
+    
+    <div class="container" id="advanced-search-form">
+        <h2><b>ALTA DOCENTE</b></h2>
+    <form action="" method="POST"> {% csrf_token %}
+        {{formulario|crispy}}
+        <br>
+        <button type="submit" value='Guardar' class="btn btn-primary">Guardar</button>
+        <br>
+        {% if registrado %}
+        <div class="alert alert-success" role="alert">
+            El docente {{docente_registrado.apellido}}, {{docente_registrado.nombre}}, DNI {{docente_registrado.dni}} ha sido registrado existosamente.
+        </div>
+        {% endif %}
+    </form>
+</body>
+{% endblock %}
+</html>
