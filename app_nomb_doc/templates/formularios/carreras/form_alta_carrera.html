@@ -15,20 +15,16 @@
     <div class="container mt-18" style="width: 95%; font-size:14px">
     <form action="" method="POST" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
-            <span class="btn btn-secondary mb-4">ALTA DOCENTE</span>   
+            <span class="btn btn-secondary mb-4">ALTA CARRERA</span>   
             <div class="row">
-                <div class="col-4">{{formulario.nombre|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.apellido|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.dni|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.carrera|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.codigo|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.tipo_carrera|as_crispy_field}}</div>
             </div>
             <div class="row">
-                <div class="col-4">{{formulario.titulo_grado|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.titulo_posgrado|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.hs_asignar|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-4">{{formulario.metodo_alta|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.fecha_alta|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.plan_de_estudio|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.resolucion_rectoral|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.cantidad_asignaturas|as_crispy_field}}</div>
             </div>
             <hr style="border: 1px solid black;">
             <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Guardar'>Guardar</button>
@@ -38,10 +34,9 @@
     {% if registrado %}
     <div class="mt-5">
         <div class="alert alert-success" role="alert">
-            El docente {{docente_registrado.apellido}}, {{docente_registrado.nombre}}, DNI {{docente_registrado.dni}} ha sido registrado existosamente.
+            La carrera {{carrera_registrada.carrera}} de {{carrera_registrada.tipo_carrera}} ha sido registrada existosamente.
         </div>
     </div>
     {% endif %}
 </body>
 {% endblock %}
-
