@@ -16,14 +16,14 @@ class LetrasMayusculas(forms.CharField):
 #FORMULARIOS DOCENTES
 class FormAltaDocente (forms.ModelForm):
 
-    #VALIDACIONES
-    nombre=LetrasMinusculas(
+    #Validaciones
+    nombre=forms.CharField(
         label='NOMBRE',
         min_length=3, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre'})
     )
-    apellido=LetrasMinusculas(
+    apellido=forms.CharField(
         label='APELLIDO',
         min_length=3, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
@@ -45,13 +45,13 @@ class FormAltaDocente (forms.ModelForm):
         validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre@ejemplo.com'})
     )
-    titulo_grado=LetrasMinusculas(
+    titulo_grado=forms.CharField(
         label='TITULO DE GRADO',
         min_length=5, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo grado'})
     )
-    titulo_posgrado=LetrasMinusculas(
+    titulo_posgrado=forms.CharField(
         label='TITULO DE POSGRADO',
         min_length=5, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
@@ -71,28 +71,28 @@ class FormAltaDocente (forms.ModelForm):
     class Meta:
         model=Docentes
         exclude=['fecha_creacion']
-        
+        labels={
+            'telefono':'TELEFONO',
+            'metodo_alta':'METODO DE ALTA DOCENTE',
+        }
         OPCIONES_METODO = (
-        ('', 'Seleccione el metodo'),
-        ('Seleccion docente', 'Seleccion docente'),
-        ('Necesidad y urgencia', 'Necesidad y urgencia'),    
+            ('', 'Seleccione el metodo'),
+            ('Seleccion docente', 'Seleccion docente'),
+            ('Necesidad y urgencia', 'Necesidad y urgencia'),    
         )
-
         widgets={
-          'telefono': forms.TextInput(attrs={
-                'style': 'font-size: 16px',
-                'data-mask':'(000) 000-0000',
-                'placeholder':'(012) 345-6789'
-                }
-            )
-        }
-        widgets={
-          'metodo_alta': forms.Select(
+            'metodo_alta': forms.Select(
                 choices=OPCIONES_METODO,
-                attrs={'class': 'form-control',
+                attrs={'class': 'form-control'
+                }),
+            'telefono': forms.TextInput(attrs={
+                'style': 'font-size: 16px',
+                'placeholder':'(012) 345-6789',
+                'data-mask':'(000) 000-0000' 
                 }
             )
         }
+
 class FormReporte (forms.Form):
     desde_fecha_alta=forms.DateField(
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),

@@ -5,10 +5,10 @@ from django.db import models
 class Docentes(models.Model):
     nombre=models.CharField(max_length=40)
     apellido=models.CharField(max_length=40)
-    dni=models.CharField(max_length=7)
+    dni=models.CharField(max_length=8, unique=True)
     fecha_nacimiento=models.DateField()
     telefono=models.CharField(max_length=20)
-    email=models.EmailField(max_length=50)
+    email=models.EmailField(max_length=50, unique=True)
     titulo_grado=models.CharField(max_length=40)
     titulo_posgrado=models.CharField(max_length=40)
     hs_asignar=models.CharField(max_length=2)
