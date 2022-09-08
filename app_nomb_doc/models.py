@@ -35,6 +35,10 @@ class Carreras(models.Model):
     cantidad_asignaturas=models.IntegerField()
     asignaturas=models.CharField(max_length=40)
     
+    def clean(self):
+        self.carrera = self.carrera.capitalize()
+        self.asignaturas = self.asignaturas.capitalize() 
+    
 class Comisiones(models.Model):
     carrera=models.CharField(max_length=40)
     asignatura=models.CharField(max_length=40)

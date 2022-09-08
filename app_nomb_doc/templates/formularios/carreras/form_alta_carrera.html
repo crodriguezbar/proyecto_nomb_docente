@@ -26,6 +26,19 @@
                 <div class="col-4">{{formulario.cantidad_asignaturas|as_crispy_field}}</div>
             </div>
             <hr style="border: 1px solid black;">
+
+            <span class="btn btn-secondary mb-4">ESTRUCTURA CURRICULAR</span>   
+            <div class="row">
+                <div class="col-4">{{formulario.carrera|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.codigo|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.tipo_carrera|as_crispy_field}}</div>
+            </div>
+            <div class="row">
+                <div class="col-4">{{formulario.plan_de_estudio|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.resolucion_rectoral|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.cantidad_asignaturas|as_crispy_field}}</div>
+            </div>
+            <hr style="border: 1px solid black;">
             <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Guardar'>Guardar</button>
         </div>
     </form>
