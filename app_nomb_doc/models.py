@@ -37,7 +37,13 @@ class Carreras(models.Model):
     
     def clean(self):
         self.carrera = self.carrera.capitalize()
-        self.asignaturas = self.asignaturas.capitalize() 
+        self.asignaturas = self.asignaturas.capitalize()
+        
+class Asignatura(models.Model): 
+    asignatura=models.CharField(max_length=40)
+    
+    def clean(self):
+        self.asignatura = self.asignatura.capitalize()
     
 class Comisiones(models.Model):
     carrera=models.CharField(max_length=40)

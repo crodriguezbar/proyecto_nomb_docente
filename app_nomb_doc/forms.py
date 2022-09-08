@@ -1,7 +1,7 @@
 from dataclasses import fields
 from datetime import datetime
 from django import forms
-from app_nomb_doc.models import Carreras, Docentes
+from app_nomb_doc.models import Asignatura, Carreras, Docentes
 from django.core.validators import RegexValidator
 
 #Letras minusculas
@@ -134,7 +134,7 @@ class FormAltaCarrera (forms.ModelForm):
     
     class Meta:
         model=Carreras
-        exclude=['fecha_creacion']
+        fields='__all__'
         labels={
             'tipo_carrera':'TIPO DE CARRERA',
             'codigo':'CODIGO'
@@ -155,7 +155,18 @@ class FormAltaCarrera (forms.ModelForm):
                 'placeholder':'iniciales carrera',
                 'data-mask':'AA'})            
         }
-        
+
+class AltaAsignaturas(forms.ModelForm):      
+    class Meta:
+        model=Asignatura
+        fields='__all__'
+        labels={"asignatura":''}
+        widgets= {
+            'asignatura': forms.TextInput(attrs={
+                'style': 'font-size: 14px',
+                'placeholder':'nombre asignatura'})          
+        }
+
 class FormReporteCarrera (forms.Form):
     carrera=forms.CharField(required=True)
 
