@@ -33,19 +33,12 @@ class FormAltaDocente (forms.ModelForm):
         label='FECHA DE NACIMIENTO',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
     )  
-    telefono=forms.CharField(
-        label='NUMERO DE CELULAR',
-        min_length=5, max_length=40, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
-        widget=forms.TextInput(attrs={'placeholder':'(012) 345-6789'})
-    )
     email=forms.CharField(
         label='DIRECCION DE EMAIL',
         min_length=8, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre@ejemplo.com'})
     )
-    
     titulo_grado=forms.CharField(
         label='TITULO DE GRADO',
         min_length=5, max_length=40, 
@@ -66,7 +59,6 @@ class FormAltaDocente (forms.ModelForm):
     )
     metodo_alta=forms.ChoiceField(
         label='METODO DE ALTA DOCENTE',
-        required=True,
         choices=OPCIONES_SELECCION,
         widget= forms.RadioSelect()
     )
@@ -74,10 +66,19 @@ class FormAltaDocente (forms.ModelForm):
         label='FECHA DE ALTA DOCENTE',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
     )  
+    
     class Meta:
         model=Docentes
         exclude=['fecha_creacion']
-
+        
+        widgets={
+          'telefono': forms.TextInput(attrs={
+                'style': 'font-size: 16px',
+                'data-mask':'(000) 000-0000',
+                'placeholder':'(012) 345-6789'
+                }
+            )
+        }
 class FormReporte (forms.Form):
     desde_fecha_alta=forms.DateField(
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
