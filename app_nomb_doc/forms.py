@@ -4,20 +4,26 @@ from django import forms
 from app_nomb_doc.models import Docentes
 from django.core.validators import RegexValidator
 
+#Letras minusculas
+class LetrasMinusculas(forms.CharField):
+    def to_python(self, value):
+        return value.lower()
+#Letras mayusculas
+class LetrasMayusculas(forms.CharField):
+    def to_python(self, value):
+        return value.upper()
+
 #FORMULARIOS DOCENTES
 class FormAltaDocente (forms.ModelForm):
-    OPCIONES_SELECCION = (
-        ('Seleccion Docente', 'Seleccion Docente'),
-        ('Necesidad y Urgencia', 'Necesidad y Urgencia'),    
-    )
+
     #VALIDACIONES
-    nombre=forms.CharField(
+    nombre=LetrasMinusculas(
         label='NOMBRE',
         min_length=3, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre'})
     )
-    apellido=forms.CharField(
+    apellido=LetrasMinusculas(
         label='APELLIDO',
         min_length=3, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
@@ -33,34 +39,29 @@ class FormAltaDocente (forms.ModelForm):
         label='FECHA DE NACIMIENTO',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
     )  
-    email=forms.CharField(
+    email=LetrasMinusculas(
         label='DIRECCION DE EMAIL',
         min_length=8, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre@ejemplo.com'})
     )
-    titulo_grado=forms.CharField(
+    titulo_grado=LetrasMinusculas(
         label='TITULO DE GRADO',
         min_length=5, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo grado'})
     )
-    titulo_posgrado=forms.CharField(
+    titulo_posgrado=LetrasMinusculas(
         label='TITULO DE POSGRADO',
         min_length=5, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo posgrado'})
-    )
+    ) 
     hs_asignar=forms.IntegerField(
         label='HORAS A ASIGNAR',
         max_value=45,
         validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'horas a asignar'})
-    )
-    metodo_alta=forms.ChoiceField(
-        label='METODO DE ALTA DOCENTE',
-        choices=OPCIONES_SELECCION,
-        widget= forms.RadioSelect()
     )
     fecha_alta=forms.DateField(
         label='FECHA DE ALTA DOCENTE',
@@ -71,11 +72,24 @@ class FormAltaDocente (forms.ModelForm):
         model=Docentes
         exclude=['fecha_creacion']
         
+        OPCIONES_METODO = (
+        ('', 'Seleccione el metodo'),
+        ('Seleccion docente', 'Seleccion docente'),
+        ('Necesidad y urgencia', 'Necesidad y urgencia'),    
+        )
+
         widgets={
           'telefono': forms.TextInput(attrs={
                 'style': 'font-size: 16px',
                 'data-mask':'(000) 000-0000',
                 'placeholder':'(012) 345-6789'
+                }
+            )
+        }
+        widgets={
+          'metodo_alta': forms.Select(
+                choices=OPCIONES_METODO,
+                attrs={'class': 'form-control',
                 }
             )
         }
