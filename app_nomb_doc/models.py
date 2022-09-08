@@ -7,6 +7,8 @@ class Docentes(models.Model):
     apellido=models.CharField(max_length=40)
     dni=models.CharField(max_length=7)
     fecha_nacimiento=models.DateField()
+    telefono=models.CharField(max_length=20)
+    email=models.EmailField(max_length=50)
     titulo_grado=models.CharField(max_length=40)
     titulo_posgrado=models.CharField(max_length=40)
     hs_asignar=models.CharField(max_length=2)

@@ -27,12 +27,25 @@ class FormAltaDocente (forms.ModelForm):
         label='DNI',
         max_length=7, 
         validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
-        widget=forms.TextInput(attrs={'placeholder':'dni'})
+        widget=forms.TextInput(attrs={'placeholder':'n° de dni'})
     )
     fecha_nacimiento=forms.DateField(
         label='FECHA DE NACIMIENTO',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
     )  
+    telefono=forms.CharField(
+        label='NUMERO DE CELULAR',
+        min_length=5, max_length=40, 
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
+        widget=forms.TextInput(attrs={'placeholder':'(012) 345-6789'})
+    )
+    email=forms.CharField(
+        label='DIRECCION DE EMAIL',
+        min_length=8, max_length=40, 
+        validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
+        widget=forms.TextInput(attrs={'placeholder':'nombre@ejemplo.com'})
+    )
+    
     titulo_grado=forms.CharField(
         label='TITULO DE GRADO',
         min_length=5, max_length=40, 
