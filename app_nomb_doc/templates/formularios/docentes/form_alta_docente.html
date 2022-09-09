@@ -5,14 +5,14 @@
 <body>
     <br>
     <br>
-    {%if forms.errors %}
+    {%if formmulario.errors %}
       <div class="alert alert-danger" role="alert">
         A simple danger alert—check it out!
       </div>
     {% endif %}
 
     <div class="container mt-18" style="width: 95%; font-size:14px">
-    <form action="" method="POST" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
+    <form action="" method="POST" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
             <span class="btn btn-secondary mb-4">ALTA DOCENTE</span>   
             <div class="row">

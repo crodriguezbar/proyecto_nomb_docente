@@ -5,55 +5,51 @@ from app_nomb_doc.models import Asignatura, Carreras, Docentes
 from django.core.validators import RegexValidator
 
 #Letras minusculas
-class LetrasMinusculas(forms.CharField):
+class LetrasMinusculas(forms.CharField): #OK
     def to_python(self, value):
         return value.lower()
-#Letras mayusculas
-class LetrasMayusculas(forms.CharField):
-    def to_python(self, value):
-        return value.upper()
 
 #FORMULARIOS DOCENTES
-class FormAltaDocente (forms.ModelForm):
+class FormAltaDocente (forms.ModelForm): #OK!!!
 
     #Validaciones
-    nombre=forms.CharField(
+    nombre=forms.CharField( #OK
         label='NOMBRE',
         min_length=3, max_length=40, 
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre'})
     )
-    apellido=forms.CharField(
+    apellido=forms.CharField( #OK
         label='APELLIDO',
         min_length=3, max_length=40, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
+        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'apellido'})
     )
     fecha_nacimiento=forms.DateField(
         label='FECHA DE NACIMIENTO',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
     )  
-    email=LetrasMinusculas(
+    email=LetrasMinusculas( #OK
         label='DIRECCION DE EMAIL',
         min_length=8, max_length=40, 
-        validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
+        #validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre@ejemplo.com'})
     )
-    titulo_grado=forms.CharField(
+    titulo_grado=forms.CharField( #OK
         label='TITULO DE GRADO',
         min_length=5, max_length=40, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
+        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo grado'})
     )
-    titulo_posgrado=forms.CharField(
+    titulo_posgrado=forms.CharField( #OK
         label='TITULO DE POSGRADO',
-        min_length=5, max_length=40, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
+        max_length=40, 
+        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo posgrado'})
     ) 
-    hs_asignar=forms.IntegerField(
+    hs_asignar=forms.CharField( #OK
         label='HORAS A ASIGNAR',
-        max_value=45,
+        max_length=2,
         validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'horas a asignar'})
     )
@@ -62,9 +58,10 @@ class FormAltaDocente (forms.ModelForm):
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
     )  
     
-    class Meta:
-        model=Docentes
-        exclude=['fecha_creacion']
+    class Meta: #OK
+        model=Docentes #OK
+        exclude=['fecha_creacion'] #OK
+
         labels={
             'dni':'DNI',
             'telefono':'TELEFONO',
@@ -103,7 +100,7 @@ class FormReporteDocente (forms.Form):
         label='DNI',
         max_length=7, 
         required=True,
-        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        #validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'n° de dni'})
     )    
     
@@ -113,25 +110,25 @@ class FormAltaCarrera (forms.ModelForm):
     carrera=forms.CharField(
         label='CARRERA',
         max_length=40, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
+        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre'})
     )
     plan_de_estudio=forms.CharField(
         label='PLAN DE ESTUDIO (AÑO)',
         max_length=4, 
-        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        #validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'año'})                           
     )
     resolucion_rectoral=forms.CharField(
         label='RESOLUCION RECTORAL DE APROBACION',
         max_length=20, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='!')],
+        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='!')],
         widget=forms.TextInput(attrs={'placeholder':'codigo'})
     )
     cantidad_asignaturas=forms.CharField(
         label='CANTIDAD TOTAL DE MATERIAS',
         max_length=2, 
-        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        #validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'cantidad'})
     )
     

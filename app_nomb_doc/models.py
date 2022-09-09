@@ -3,15 +3,15 @@ from django.db import models
 # Create your models here. Class CamelCase 
 
 class Docentes(models.Model):
-    nombre=models.CharField(max_length=40)
-    apellido=models.CharField(max_length=40)
-    dni=models.CharField(max_length=8, unique=True)
+    nombre=models.CharField(max_length=40) #OK
+    apellido=models.CharField(max_length=40) #OK
+    dni=models.CharField(max_length=10, unique=True) #OK
     fecha_nacimiento=models.DateField()
-    telefono=models.CharField(max_length=20)
-    email=models.EmailField(max_length=50, unique=True)
-    titulo_grado=models.CharField(max_length=40)
-    titulo_posgrado=models.CharField(max_length=40)
-    hs_asignar=models.CharField(max_length=2)
+    telefono=models.CharField(max_length=20) #OK
+    email=models.EmailField(max_length=50, unique=True) #OK
+    titulo_grado=models.CharField(max_length=40) #OK
+    titulo_posgrado=models.CharField(max_length=40) #OK
+    hs_asignar=models.CharField(max_length=2) #OK
     metodo_alta=models.CharField(max_length=40)
     fecha_alta=models.DateField()
     fecha_creacion=models.DateTimeField(auto_now_add=True)
@@ -22,7 +22,7 @@ class Docentes(models.Model):
         self.apellido = self.apellido.capitalize() 
         self.titulo_grado = self.titulo_grado.capitalize()
         self.titulo_posgrado = self.titulo_posgrado.capitalize()
-        
+     
     def __str__(self):
         return f'Nombre: {self.nombre} Apellido: {self.apellido} DNI: {self.dni} Alta: {self.fecha_alta}'
     
