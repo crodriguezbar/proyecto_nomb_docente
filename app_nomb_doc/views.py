@@ -75,8 +75,7 @@ def alta_carrera(request):
                 'formulario1':FormAltaCarrera(),
                 'registro':'OK',
                 'carrera_registrada': alta_carrera1,
-                'formulario2':AltaAsignaturas(),
-                
+                'formulario2':AltaAsignaturas(), 
             }   
             return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
     contexto={

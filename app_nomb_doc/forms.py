@@ -29,12 +29,6 @@ class FormAltaDocente (forms.ModelForm):
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'apellido'})
     )
-    dni=forms.CharField(
-        label='DNI',
-        max_length=7, 
-        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
-        widget=forms.TextInput(attrs={'placeholder':'n° de dni'})
-    )
     fecha_nacimiento=forms.DateField(
         label='FECHA DE NACIMIENTO',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
@@ -72,6 +66,7 @@ class FormAltaDocente (forms.ModelForm):
         model=Docentes
         exclude=['fecha_creacion']
         labels={
+            'dni':'DNI',
             'telefono':'TELEFONO',
             'metodo_alta':'METODO DE ALTA DOCENTE',
         }
@@ -81,6 +76,10 @@ class FormAltaDocente (forms.ModelForm):
             ('Necesidad y urgencia', 'Necesidad y urgencia'),    
         )
         widgets={
+            'dni': forms.TextInput(attrs={
+                'style': 'font-size: 16px',
+                'placeholder':'dni',
+                'data-mask':'00.000.000'}),
             'metodo_alta': forms.Select(
                 choices=OPCIONES_METODO,
                 attrs={'class': 'form-control'
