@@ -1,0 +1,51 @@
+{% extends 'static/inicio.html' %}
+{% load crispy_forms_tags %}
+{% block contenido %} 
+
+<body>
+    <br>
+    <br>
+    <div class="container mt-18" style="width: 95%; font-size:14px">
+    <form action="" method="GET" class="card p-3 mt-5"> {% csrf_token %}
+        <div class="card border-dark p-3"> 
+            <span class="btn btn-secondary mb-4">REPORTE ALTAS DOCENTES</span>   
+            <div class="row">
+                <div class="col-4">{{formulario.dni|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.desde_fecha_alta|as_crispy_field}}</div>
+                <div class="col-4">{{formulario.hasta_fecha_alta|as_crispy_field}}</div>
+            </div>
+        <hr style="border: 1px solid black;">
+        <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Buscar'>Buscar</button>
+        </div>
+        <br>
+        <br>
+        {% for docente in docentes %}
+        <div class="card border-dark p-3">
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">DNI</th>
+                <th scope="col">Fecha de Alta</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>     
+                <tr>
+                    <th scope="row">{{docente.id}}</th>
+                    <td>{{docente.apellido}}</td>
+                    <td>{{docente.nombre}}</td>
+                    <td>{{docente.dni}}</td>
+                    <td>{{docente.fecha_alta}}</td>
+                    <td><a class="btn btn-warning" href="#">Editar</td>
+                    <td><a class="btn btn-danger" href="#">Eliminar</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</body>
+{% endblock %}

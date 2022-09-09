@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from app_nomb_doc.models import Asignatura, Carreras, Comisiones, Docentes
-from app_nomb_doc.forms import AltaAsignaturas, FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormReporte, FormReporteCarrera, FormReporteComisiones, FormReporteDni
+from app_nomb_doc.forms import AltaAsignaturas, FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
 
 # Create your views here.
 
@@ -14,47 +14,49 @@ def alta_docente (request):
         
         if f_alta_docente.is_valid():
             data = f_alta_docente.cleaned_data
-            alta_docente1=Docentes(nombre=data.get('nombre'), apellido=data.get('apellido'), dni=data.get('dni'), titulo_grado=data.get('titulo_grado'), hs_asignar=data.get('hs_asignar'), metodo_alta=data.get('metodo_alta'), fecha_alta=data.get('fecha_alta'))
-            alta_docente1.save()    
-            return render(request, 'formularios/docentes/form_alta_docente.html', {'formulario':FormAltaDocente(), 'registrado':'OK', 'docente_registrado': alta_docente1})
+            alta_docente1=Docentes(
+                nombre=data.get('nombre'), 
+                apellido=data.get('apellido'), 
+                dni=data.get('dni'), 
+                fecha_nacimiento=data.get('fecha_nacimiento'), 
+                telefono=data.get('telefono'),
+                email=data.get('email'),
+                titulo_grado=data.get('titulo_grado'),
+                titulo_posgrado=data.get('titulo_posgrado'), 
+                hs_asignar=data.get('hs_asignar'), 
+                metodo_alta=data.get('metodo_alta'), 
+                fecha_alta=data.get('fecha_alta'),
+                fecha_creacion=data.get()
+            )
+            alta_docente1.save()  
+            contexto={
+                'formulario':FormAltaDocente(), 
+                'registrado':'OK', 
+                'docente_registrado': alta_docente1   
+            }  
+            return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
     contexto={
         'formulario':FormAltaDocente(),
         'registrado':''
     }
     return render(request, 'formularios/docentes/form_alta_docente.html', contexto) 
 
-def repor_alta_docente(request):
+def reporte_docente(request):
     if request.method == 'GET':
-        r_alta_docente=FormReporte(request.GET)   
+        r_alta_docente=FormReporteDocente(request.GET)   
         if r_alta_docente.is_valid():
             desde_fecha_alta=request.GET.get('desde_fecha_alta')
             hasta_fecha_alta=request.GET.get('hasta_fecha_alta')
             docentes=Docentes.objects.filter(fecha_alta__gte=desde_fecha_alta, fecha_alta__lte=hasta_fecha_alta)
             contexto={
-                'formulario': FormReporte(),
+                'formulario': FormReporteDocente(),
                 'docentes':docentes,
             }
-            return render(request, 'formularios/docentes/reporte_alta_docente.html', contexto) 
+            return render(request, 'formularios/docentes/reporte_docente.html', contexto) 
     contexto={
-        'formulario':FormReporte(),
+        'formulario':FormReporteDocente(),
         }
-    return render(request, 'formularios/docentes/reporte_alta_docente.html',contexto)
-
-def repor_alta_docente_dni(request):
-    if request.method == 'GET':
-        r_alta_docente_dni=FormReporteDni(request.GET)   
-        if r_alta_docente_dni.is_valid():
-            dni=request.GET.get('dni')
-            docentes=Docentes.objects.filter(dni__icontains=dni)
-            contexto={
-                'formulario': FormReporteDni(),
-                'docentes':docentes,
-            }
-            return render(request, 'formularios/docentes/reporte_alta_docente_dni.html', contexto) 
-    contexto={
-        'formulario':FormReporteDni(),
-    }
-    return render(request, 'formularios/docentes/reporte_alta_docente_dni.html',contexto)
+    return render(request, 'formularios/docentes/reporte_docente.html',contexto)
 
 #CARRERAS
 def alta_carrera(request):

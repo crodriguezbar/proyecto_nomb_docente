@@ -5,8 +5,7 @@ urlpatterns = [
     path('', inicio, name='home'),
     #DOCENTES
     path('altadocente/', alta_docente, name='altadocente'), 
-    path('reporte/', repor_alta_docente, name='reportealtadocente'), 
-    path('reporte_dni/', repor_alta_docente_dni, name='reportealtadocentedni'),
+    path('reporte_docente/', reporte_docente, name='reportedocente'), 
     #CARRERAS
     path('altacarrera/', alta_carrera, name='altacarrera'), 
     path('reportecarreras/', reporte_carrera, name='reportealtacarerras'),

@@ -91,7 +91,7 @@ class FormAltaDocente (forms.ModelForm):
                 'data-mask':'(000) 000-0000'})
         }
 
-class FormReporte (forms.Form):
+class FormReporteDocente (forms.Form):
     desde_fecha_alta=forms.DateField(
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
         required=True
@@ -100,9 +100,13 @@ class FormReporte (forms.Form):
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
         required=True
     )
-
-class FormReporteDni (forms.Form):
-    dni=forms.IntegerField(required=True)    
+    dni=forms.CharField(
+        label='DNI',
+        max_length=7, 
+        required=True,
+        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        widget=forms.TextInput(attrs={'placeholder':'n° de dni'})
+    )    
     
 #FORMULARIOS CARRERAS
 class FormAltaCarrera (forms.ModelForm):
