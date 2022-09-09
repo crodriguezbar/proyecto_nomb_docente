@@ -1,6 +1,5 @@
-from pyexpat.errors import messages
+from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
 from app_nomb_doc.models import Asignatura, Carreras, Comisiones, Docentes
 from app_nomb_doc.forms import AltaAsignaturas, FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
 
@@ -14,38 +13,13 @@ def alta_docente (request):
     formulario=FormAltaDocente (request.POST or None)
     if formulario.is_valid():
         formulario.save()
-        messages.success(request, 'Registro exitoso!')
-        return HttpResponseRedirect('/')
+        messages.success(request, 'El docente ha sido registrado exitosamente.!')
+        return redirect ('/altadocente')
     contexto={
         'formulario': formulario,
     }
     return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
     
-    """if request.method == 'POST':
-        f_alta_docente=FormAltaDocente(request.POST)
-        
-        if f_alta_docente.is_valid():
-            data = f_alta_docente.cleaned_data
-            alta_docente1=Docentes(
-                nombre=data.get('nombre'), 
-                apellido=data.get('apellido'), 
-                dni=data.get('dni'), 
-                fecha_nacimiento=data.get('fecha_nacimiento'),
-                telefono=data.get('telefono'), 
-                titulo_grado=data.get('titulo_grado'),
-                titulo_posgrado=data.get('titulo_posgrado'), 
-                hs_asignar=data.get('hs_asignar'), 
-                metodo_alta=data.get('metodo_alta'), 
-                fecha_alta=data.get('fecha_alta'),
-                fecha_creacion=data.get('fecha_creacion'),)
-            alta_docente1.save()    
-            return render(request, 'formularios/docentes/form_alta_docente.html', {'formulario':FormAltaDocente(), 'registrado':'OK', 'docente_registrado': alta_docente1})
-    contexto={
-        'formulario':FormAltaDocente(),
-        'registrado':''
-    }
-    return render(request, 'formularios/docentes/form_alta_docente.html', contexto) 
-"""
 def reporte_docente(request):
     if request.method == 'GET':
         r_alta_docente=FormReporteDocente(request.GET)   
