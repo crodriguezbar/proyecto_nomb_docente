@@ -10,34 +10,37 @@
         <div class="card border-dark p-3"> 
             <span class="btn btn-secondary mb-4">ALTA DOCENTE</span>   
             <div class="row">
-                <div class="col-3">{{formulario.nombre|as_crispy_field}}</div>
-                <div class="col-3">{{formulario.apellido|as_crispy_field}}</div>
-                <div class="col-3">{{formulario.dni|as_crispy_field}}</div>
-                <div class="col-3">{{formulario.fecha_nacimiento|as_crispy_field}}</div>
+                <div class="col-3"><strong>{{formulario.nombre|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.apellido|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.dni|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.fecha_nacimiento|as_crispy_field}}</strong></div>
             </div>
             <div class="row">
-                <div class="col-3">{{formulario.telefono|as_crispy_field}}</div>
-                <div class="col-3">{{formulario.email|as_crispy_field}}</div>
-                <div class="col-3">{{formulario.titulo_grado|as_crispy_field}}</div>
-                <div class="col-3">{{formulario.titulo_posgrado|as_crispy_field}}</div>
+                <div class="col-3"><strong>{{formulario.telefono|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.email|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.titulo_grado|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.titulo_posgrado|as_crispy_field}}</strong></div>
             </div>
             <hr style="border: 1px solid black;">
             <div class="row">
-                <div class="col-4">{{formulario.hs_asignar|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.metodo_alta|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.fecha_alta|as_crispy_field}}</div>
+                <div class="col-4"><strong>{{formulario.hs_asignar|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.metodo_alta|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.fecha_alta|as_crispy_field}}</strong></div>
             </div>
             <hr style="border: 1px solid black;">
-            <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Guardar'>Guardar</button>
-        </div>
-
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-outline-secondary btn-lg mt-3" style="width:120px" value='Guardar'>Guardar</button>  
+            </div>  
+    <br>  
+    <!-- Mensaje desde views.py -->
     {% for message in messages %}
         {% if message.tags == 'success' %}
-            <div class="text-center alert alert-primary alert-dismissible fade show" role="alert">{{message}}
+            <div class="text-center alert alert-primary alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
                 <a href="{% url "altadocente" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
             </div>
         {% endif %}
     {% endfor %}
+        </div>
     </form>    
     </div>
 </body>

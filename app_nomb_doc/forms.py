@@ -22,7 +22,7 @@ class FormAltaDocente (forms.ModelForm): #OK!!!
     apellido=forms.CharField( #OK
         label='APELLIDO',
         min_length=3, max_length=40, 
-        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'apellido'})
     )
     fecha_nacimiento=forms.DateField(
@@ -32,19 +32,19 @@ class FormAltaDocente (forms.ModelForm): #OK!!!
     email=LetrasMinusculas( #OK
         label='DIRECCION DE EMAIL',
         min_length=8, max_length=40, 
-        #validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
+        validators=[RegexValidator(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$', message='Ingrese una direccion valida de email!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre@ejemplo.com'})
     )
     titulo_grado=forms.CharField( #OK
         label='TITULO DE GRADO',
         min_length=5, max_length=40, 
-        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo grado'})
     )
     titulo_posgrado=forms.CharField( #OK
         label='TITULO DE POSGRADO',
         max_length=40, 
-        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'titulo posgrado'})
     ) 
     hs_asignar=forms.CharField( #OK
@@ -86,7 +86,16 @@ class FormAltaDocente (forms.ModelForm): #OK!!!
                 'placeholder':'(012) 345-6789',
                 'data-mask':'(000) 000-0000'})
         }
-
+    #Super Funcion
+    def __init__(self, *args, **kwargs):
+        super(FormAltaDocente,self).__init__(*args, **kwargs)
+        
+        error_messages = ['nombre','apellido', 'dni', 'fecha_nacimiento', 'telefono','email', 'titulo_grado',
+            'titulo_posgrado', 'hs_asignar','metodo_alta','fecha_alta'
+        ]
+        for field in error_messages:
+            self.fields[field].error_messages.update({'required':'Este campo no puede estar vacio'})
+        
 class FormReporteDocente (forms.Form):
     desde_fecha_alta=forms.DateField(
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
