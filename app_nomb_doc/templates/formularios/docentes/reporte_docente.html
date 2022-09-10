@@ -8,7 +8,7 @@
     <div class="container mt-18" style="width: 95%; font-size:14px">
     <form action="" method="GET" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
-            <span class="btn btn-secondary mb-4">REPORTE ALTAS DOCENTES</span>   
+            <span class="btn btn-secondary mb-4"><strong>REPORTE ALTAS DOCENTES</strong></span>   
             <div class="row">
                 <div class="col-4"><strong>{{formulario.dni|as_crispy_field}}</strong></div>
                 <div class="col-4"><strong>{{formulario.desde_fecha_alta|as_crispy_field}}</strong></div>
@@ -16,7 +16,7 @@
             </div>
             <hr style="border: 1px solid black;">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Buscar'>Buscar</button>
+                <button type="submit" class="btn btn-outline-secondary btn-lg mt-0" style="width:120px" value='Buscar'>Buscar</button>
             </div>
         </div>
         <br>

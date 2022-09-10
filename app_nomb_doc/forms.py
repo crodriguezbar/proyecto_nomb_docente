@@ -61,7 +61,6 @@ class FormAltaDocente (forms.ModelForm): #OK!!!
     class Meta: #OK
         model=Docentes #OK
         exclude=['fecha_creacion'] #OK
-
         labels={
             'dni':'DNI',
             'telefono':'TELEFONO',
@@ -98,20 +97,23 @@ class FormAltaDocente (forms.ModelForm): #OK!!!
         
 class FormReporteDocente (forms.Form):
     desde_fecha_alta=forms.DateField(
+        label='DESDE FECHA DE ALTA',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
-        required=True
+        required=False
     )
     hasta_fecha_alta=forms.DateField(
+        label='HASTA FECHA DE ALTA',
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
-        required=True
+        required=False
     )
-    dni=forms.CharField(
+    fecha_alta=forms.DateField(
         label='DNI',
-        max_length=7, 
-        required=True,
-        #validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
-        widget=forms.TextInput(attrs={'placeholder':'n° de dni'})
-    )    
+        widget=forms.TextInput(attrs={
+                'style': 'font-size: 16px',
+                'placeholder':'dni',
+                'data-mask':'00.000.000'}),
+        required=False
+    )  
     
 #FORMULARIOS CARRERAS
 class FormAltaCarrera (forms.ModelForm):
