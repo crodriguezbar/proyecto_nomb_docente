@@ -106,7 +106,7 @@ class FormReporteDocente (forms.Form):
         widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
         required=False
     )
-    fecha_alta=forms.DateField(
+    dni=forms.CharField(
         label='DNI',
         widget=forms.TextInput(attrs={
                 'style': 'font-size: 16px',

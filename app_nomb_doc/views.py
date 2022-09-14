@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from app_nomb_doc.models import Asignatura, Carreras, Comisiones, Docentes
 from app_nomb_doc.forms import AltaAsignaturas, FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
+from django.views.generic.list import ListView 
 
 # Create your views here.
 
@@ -12,8 +13,23 @@ def inicio (request):
 def alta_docente (request):
     formulario=FormAltaDocente (request.POST or None)
     if formulario.is_valid():
-        formulario.save()
-        messages.success(request, 'El docente ha sido registrado exitosamente.!')
+        data=formulario.cleaned_data
+        alta_docente1=Docentes(
+            nombre=data.get('nombre'), 
+            apellido=data.get('apellido'), 
+            dni=data.get('dni'),
+            fecha_nacimiento=data.get('fecha_nacimiento'),
+            telefono=data.get('telefono'),
+            email=data.get('email'), 
+            titulo_grado=data.get('titulo_grado'),
+            titulo_posgrado=data.get('titulo_posgrado'), 
+            hs_asignar=data.get('hs_asignar'), 
+            metodo_alta=data.get('metodo_alta'), 
+            fecha_alta=data.get('fecha_alta'),
+            fecha_creacion=data.get('fecha_creacion'),
+        )
+        alta_docente1.save()
+        messages.success(request, 'El docente %s, %s (%s) ha sido registrado exitosamente.!' % (alta_docente1.apellido, alta_docente1.nombre, alta_docente1.dni))
         return redirect ('/altadocente')
     contexto={
         'formulario': formulario,
@@ -21,22 +37,58 @@ def alta_docente (request):
     return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
     
 def reporte_docente(request):
-    if request.method == 'GET':
-        r_alta_docente=FormReporteDocente(request.GET)   
-        if r_alta_docente.is_valid():
-            desde_fecha_alta=request.GET.get('desde_fecha_alta')
-            hasta_fecha_alta=request.GET.get('hasta_fecha_alta')
+    formulario=FormReporteDocente(request.GET or None)   
+    if formulario.is_valid():
+        dni=request.GET.get('dni')
+        desde_fecha_alta=request.GET.get('desde_fecha_alta')
+        hasta_fecha_alta=request.GET.get('hasta_fecha_alta')
+        if dni =="" and desde_fecha_alta=="":
+            docentes=Docentes.objects.filter(fecha_alta__lte=hasta_fecha_alta) 
+            messages.info(request, "CRITERIO DE BUSQUEDA: hasta el %s" % (hasta_fecha_alta))
+        elif dni =="" and hasta_fecha_alta=="":
+            docentes=Docentes.objects.filter(fecha_alta__gte=desde_fecha_alta)
+            messages.info(request, "CRITERIO DE BUSQUEDA: desde el %s" % (desde_fecha_alta))
+        elif desde_fecha_alta !="" and hasta_fecha_alta !="":
             docentes=Docentes.objects.filter(fecha_alta__gte=desde_fecha_alta, fecha_alta__lte=hasta_fecha_alta)
-            contexto={
-                'formulario': FormReporteDocente(),
-                'docentes':docentes,
-            }
-            return render(request, 'formularios/docentes/reporte_docente.html', contexto) 
+            messages.info(request, "CRITERIO DE BUSQUEDA: desde %s hasta %s" % (desde_fecha_alta, hasta_fecha_alta))
+        else:
+            docentes=Docentes.objects.filter(dni__contains=dni)
+            messages.info(request, "CRITERIO DE BUSQUEDA: El DNI contiene el numero %s" % (dni))
+        contexto={
+            'formulario': FormReporteDocente(),
+            'docentes':docentes,
+        }
+        return render(request, 'formularios/docentes/reporte_docente.html', contexto) 
     contexto={
         'formulario':FormReporteDocente(),
         }
     return render(request, 'formularios/docentes/reporte_docente.html',contexto)
 
+def eliminar_docente(request, dni):
+    docente_eliminar=Docentes.objects.filter(dni=dni)
+    docente_eliminar.delete()
+    
+    messages.info(request, f'El docente {docente_eliminar} fue eliminado')
+    return redirect('reportedocente')
+
+def editar_docente(request, dni):
+    docente_editar=Docentes.objects.filter(dni=dni)
+    contexto={
+        'formulario':FormAltaDocente(
+            initial={
+                docente_editar.dni,
+                })
+    }
+    return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
+
+class ReporteDocente(ListView):
+    model=Docentes
+    template_name: 'reporte_docente.html'
+    paginate_by: 5
+    def get(self, request, *args, **kwargs):
+        dni=request.POST.get('dni')
+        dnis=dni.objetcs.filter(dni__contains=dni)
+    
 #CARRERAS
 def alta_carrera(request):
     if request.method == 'POST':

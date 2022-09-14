@@ -20,34 +20,58 @@
             </div>
         </div>
         <br>
-        <br>
-        {% for docente in docentes %}
+        
+        {% for message in messages %}
         <div class="card border-dark p-3">
+            {% if message.tags == 'info' %}
+                <span class="btn btn-secondary mb-4"><strong>{{message}}</strong></span>  
         <table class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Nombre</th>
+                <th scope="col">APELLIDO</th>
+                <th scope="col">NOMBRE</th>
                 <th scope="col">DNI</th>
-                <th scope="col">Fecha de Alta</th>
-                <th scope="col">Editar</th>
-                <th scope="col">Eliminar</th>
+                <th scope="col">HORAS ASIGNADAS</th>
+                <th scope="col">FECHA DE ALTA</th>
+                <th scope="col">EDITAR</th>
+                <th scope="col">ELIMINAR</th>
               </tr>
             </thead>
+            {% for docente in docentes %}
             <tbody>     
                 <tr>
-                    <th scope="row">{{docente.id}}</th>
-                    <td>{{docente.apellido}}</td>
-                    <td>{{docente.nombre}}</td>
-                    <td>{{docente.dni}}</td>
-                    <td>{{docente.fecha_alta}}</td>
-                    <td><a class="btn btn-warning" href="#">Editar</td>
-                    <td><a class="btn btn-danger" href="#">Eliminar</td>
+                    <th scope="row" style="vertical-align:middle">{{docente.id}}</th>
+                    <td style="vertical-align:middle">{{docente.apellido}}</td> 
+                    <td style="vertical-align:middle">{{docente.nombre}}</td>
+                    <td style="vertical-align:middle">{{docente.dni}}</td>
+                    <td style="vertical-align:middle">{{docente.hs_asignar}}</td>
+                    <td style="vertical-align:middle">{{docente.fecha_alta}}</td>
+                    <td><a href="{% url 'eliminardocente' docente.dni %}" class="btn btn-outline-warning btn-sm mt-0" style="width:80px"href="#">Editar</td>
+                    <td><a href="{% url 'eliminardocente' docente.dni %}" class="btn btn-outline-danger btn-sm mt-0" style="width:80px" href="#">Eliminar</td>
                 </tr>
-                {% endfor %}
             </tbody>
+            {% endfor %}
         </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+            {% endif %}
+        {% endfor %}  
     </form>
     </div>
 </body>
