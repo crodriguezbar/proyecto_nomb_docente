@@ -65,19 +65,51 @@ def reporte_docente(request):
     return render(request, 'formularios/docentes/reporte_docente.html',contexto)
 
 def eliminar_docente(request, dni):
-    docente_eliminar=Docentes.objects.filter(dni=dni)
-    docente_eliminar.delete()
-    
-    messages.info(request, f'El docente {docente_eliminar} fue eliminado')
+    docente_eliminar=Docentes.objects.get(dni=dni)
+    messages.success(request, "El docente %s, %s (Dni: %s) fue eliminado" % (docente_eliminar.apellido, docente_eliminar.nombre, docente_eliminar.dni))
+    docente_eliminar.delete() 
     return redirect('reportedocente')
 
 def editar_docente(request, dni):
-    docente_editar=Docentes.objects.filter(dni=dni)
+    docente_editar=Docentes.objects.get(dni=dni)
+    
+    if request.method == 'POST':
+        formulario=FormAltaDocente(request.POST)
+        
+        if formulario.is_valid():
+            data=formulario.cleaned_data
+            docente_editar.nombre=data.get('nombre')
+            docente_editar.apellido=data.get('apellido') 
+            docente_editar.dni=data.get('dni')
+            docente_editar.fecha_nacimiento=data.get('fecha_nacimiento')
+            docente_editar.telefono=data.get('telefono')
+            docente_editar.email=data.get('email')
+            docente_editar.titulo_grado=data.get('titulo_grado')
+            docente_editar.titulo_posgrado=data.get('titulo_posgrado') 
+            docente_editar.hs_asignar=data.get('hs_asignar') 
+            docente_editar.metodo_alta=data.get('metodo_alta')
+            docente_editar.fecha_alta=data.get('fecha_alta')
+            docente_editar.fecha_creacion=data.get('fecha_creacion')
+            
+            docente_editar.save()
+            messages.success(request, 'Los datos del docente %s, %s (%s) han sido actualizados exitosamente.!' % (docente_editar.apellido, docente_editar.nombre, docente_editar.dni))
+            return redirect('reportedocente')   
     contexto={
         'formulario':FormAltaDocente(
             initial={
-                docente_editar.dni,
-                })
+                'nombre': docente_editar.nombre,
+                'apellido': docente_editar.apellido,
+                'dni': docente_editar.dni,
+                'fecha_nacimiento': docente_editar.fecha_nacimiento,
+                'telefono': docente_editar.telefono,    
+                'email': docente_editar.email,
+                'titulo_grado': docente_editar.titulo_grado,
+                'titulo_posgrado': docente_editar.titulo_posgrado,
+                'hs_asignar': docente_editar.hs_asignar,
+                'metodo_alta': docente_editar.metodo_alta,
+                'fecha_alta': docente_editar.fecha_alta,
+            }
+        )
     }
     return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
 

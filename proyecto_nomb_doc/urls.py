@@ -19,5 +19,6 @@ from app_nomb_doc import views
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
+    path('admin/', admin.site.urls),
     path('', include('app_nomb_doc.urls')),
 ]
