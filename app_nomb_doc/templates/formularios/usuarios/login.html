@@ -1,13 +1,32 @@
 {% extends 'static/inicio.html' %}
-{% load static %}
-
-{% block titulo %} Login {% endblock %}
+{% load crispy_forms_tags %}
 {% block contenido %} 
-<form action="" method="POST"> {% csrf_token %}
 
-    {{ formulario.as_p }}
-    <input type="submit" value="Login" />
-</form>
-
-
+<body>
+    <br>
+    <br>
+    <div class="container card p-3 border-dark mt-5" style="width: 30%; font-size:14px">
+        <a class="btn btn-dark mb-4" style="cursor:default;">
+            <i class="fa fa-lock"></i> &nbsp;&nbsp;ACCESO A NOMBRAMIENTOS DOCENTES
+        </a>
+        <form action="" method="POST" autocomplete="on" novalidate> {% csrf_token %}
+            <strong>{{formulario.username|as_crispy_field}}</strong>
+            <strong>{{formulario.password|as_crispy_field}}</strong>
+            <hr>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-outline-primary">Loguear</button>  
+                <a href="{% url 'LoginUsuario' %}" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+    <!-- Mensaje desde views.py -->
+    <br>
+    {% for message in messages %}
+        {% if message.tags == 'info' %}
+            <div class="text-center alert alert-primary alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+                <a href="{% url "LoginUsuario" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
+            </div>
+        {% endif %}
+    {% endfor %}  
+        </form>        
+    </div>
+</body>
 {% endblock %}

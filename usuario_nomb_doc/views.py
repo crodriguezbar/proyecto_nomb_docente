@@ -5,10 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 
 #LOGIN
 def login_request (request):
-    formulario =AuthenticationForm(request, data=request.POST)
     if request.method == 'POST':
-        data =formulario.cleaned_data
+        formulario =AuthenticationForm(request, data=request.POST)
+        
         if formulario.is_valid():
+            data =formulario.cleaned_data
             usuario = data.get('username')
             contrasenia = data.get('password')
             user = authenticate(username = usuario, password = contrasenia)
@@ -17,14 +18,13 @@ def login_request (request):
                 login(request, user)
                 messages.info (request, 'Bienvenido !')
             else:               
-                messages.info (request, 'Inicio de sesion fallido !')
+                messages.info (request, 'El usuario o contraseña es incorrecto !')
      
         else:               
             messages.info (request, 'Inicio de sesion fallido !')
-        return redirect('XXXX')
+        return redirect('LoginUsuario')
     contexto={
         'formulario': AuthenticationForm(),
-        'name_submit': 'login' 
     }
     return render (request, 'formularios/usuarios/login.html', contexto)  
 
