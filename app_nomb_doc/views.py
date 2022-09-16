@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 # Create your views here.
 
 def inicio (request):
-    return render(request, 'plantillas/home.html')
+    return render(request, 'formularios/usuarios/login.html')
 
 #DOCENTES
 def alta_docente (request):
