@@ -27,7 +27,7 @@ class FormAltaDocente (forms.ModelForm): #OK!!!
     )
     fecha_nacimiento=forms.DateField(
         label='FECHA DE NACIMIENTO',
-        widget=forms.DateInput(attrs={'type':"date", 'max':datetime.now().date()}),
+        widget=forms.DateInput(attrs={'style': 'cursor:pointer', 'type':"date", 'max':datetime.now().date()}),
     )  
     email=LetrasMinusculas( #OK
         label='DIRECCION DE EMAIL',

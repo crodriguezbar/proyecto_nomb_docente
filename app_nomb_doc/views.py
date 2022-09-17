@@ -3,13 +3,15 @@ from django.shortcuts import render, redirect
 from app_nomb_doc.models import Asignatura, Carreras, Comisiones, Docentes
 from app_nomb_doc.forms import AltaAsignaturas, FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
 from django.views.generic.list import ListView 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 def inicio (request):
-    return render(request, 'plantillas/home.html')
+    return render(request, 'formularios/usuarios/login.html')
 
 #DOCENTES
+@login_required
 def alta_docente (request):
     formulario=FormAltaDocente (request.POST or None)
     if formulario.is_valid():
@@ -64,12 +66,14 @@ def reporte_docente(request):
         }
     return render(request, 'formularios/docentes/reporte_docente.html',contexto)
 
+@login_required
 def eliminar_docente(request, dni):
     docente_eliminar=Docentes.objects.get(dni=dni)
     messages.success(request, "El docente %s, %s (Dni: %s) fue eliminado" % (docente_eliminar.apellido, docente_eliminar.nombre, docente_eliminar.dni))
     docente_eliminar.delete() 
     return redirect('reportedocente')
 
+@login_required
 def editar_docente(request, dni):
     docente_editar=Docentes.objects.get(dni=dni)
     
@@ -122,6 +126,7 @@ class ReporteDocente(ListView):
         dnis=dni.objetcs.filter(dni__contains=dni)
     
 #CARRERAS
+@login_required
 def alta_carrera(request):
     if request.method == 'POST':
         f_alta_carrera=FormAltaCarrera(request.POST)
