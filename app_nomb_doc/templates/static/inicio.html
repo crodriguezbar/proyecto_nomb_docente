@@ -58,11 +58,17 @@
                 </div>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i>Configuracion</a>
                 <div class="nav-item-divider"></div>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout </a>
+                <a href={% url "LogoutUsuario"%} class="dashboard-nav-item"><i class="fas fa-sign-out-alt"></i> Logout </a>
             </nav>
         </div>
         <div class='dashboard-app'>
-            <header class='dashboard-toolbar'><a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a></header>
+            <header class='dashboard-toolbar'><a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    {% if user.is_authenticated %}
+                        <strong>Usuario: {{user.get_username}} </strong>
+                    {% endif%}
+                </div>
+            </header>
             {% block contenido %}  {% endblock %}
         </div>
     </div>
