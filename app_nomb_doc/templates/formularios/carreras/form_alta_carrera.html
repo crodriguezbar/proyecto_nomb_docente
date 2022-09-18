@@ -5,112 +5,109 @@
 <body>
     <br>
     <br>
-    {%if forms.errors %}
-      <div class="alert alert-danger" role="alert">
-        A simple danger alert—check it out!
-      </div>
-    {% endif %}
-
     <div class="container mt-18" style="width: 95%; font-size:14px">
-    <form action="" method="POST" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
+    <form action="" method="POST" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
-            <span class="btn btn-secondary mb-4">ALTA CARRERA</span>   
+            <span class="btn btn-secondary mb-4"><strong>ALTA CARRERA</strong></span>   
             <div class="row">
-                <div class="col-4">{{formulario1.carrera|as_crispy_field}}</div>
-                <div class="col-4">{{formulario1.codigo|as_crispy_field}}</div>
-                <div class="col-4">{{formulario1.tipo_carrera|as_crispy_field}}</div>
+                <div class="col-4"><strong>{{formulario.carrera|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.codigo|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.tipo_carrera|as_crispy_field}}</strong></div>
             </div>
             <div class="row">
-                <div class="col-4">{{formulario1.plan_de_estudio|as_crispy_field}}</div>
-                <div class="col-4">{{formulario1.resolucion_rectoral|as_crispy_field}}</div>
-                <div class="col-4">{{formulario1.cantidad_asignaturas|as_crispy_field}}</div>
+                <div class="col-4"><strong>{{formulario.plan_de_estudio|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.resolucion_rectoral|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.cantidad_asignaturas|as_crispy_field}}</strong></div>
             </div>
             <hr style="border: 1px solid black;">
 
             <span class="btn btn-secondary mb-4">ESTRUCTURA CURRICULAR DE LA CARRERA</span>   
             <div class="row">
                 <div class="col-2 fw-bolder">1°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">1°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">2°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
-                <div class="col-2 fw-bolder">2°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2 fw-bolder">2°AÑO, 2° SEMESTRE</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">3°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">3°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">4°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">4°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <div class="row">
                 <div class="col-2 fw-bolder">5°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario2.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
             </div>
             <hr style="border: 1px solid black;">
-            <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Guardar'>Guardar</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-outline-secondary btn-lg mt-3" style="width:120px" value='Guardar'>Guardar</button> 
+            </div>
+    <br>     
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="text-center alert alert-primary alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+                <a href="{% url "altacarrera" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
+            </div>
+        {% endif %}
+    {% endfor %} 
         </div>
     </form>
     </div>
-    {% if registrado %}
-    <div class="mt-5">
-        <div class="alert alert-success" role="alert">
-            La carrera {{carrera_registrada.carrera}} de {{carrera_registrada.tipo_carrera}} ha sido registrada existosamente.
-        </div>
-    </div>
-    {% endif %}
 </body>
 {% endblock %}

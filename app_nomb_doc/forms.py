@@ -1,7 +1,7 @@
 from dataclasses import fields
 from datetime import datetime
 from django import forms
-from app_nomb_doc.models import Asignatura, Carreras, Docentes
+from app_nomb_doc.models import Carreras, Docentes
 from django.core.validators import RegexValidator
 
 #Letras minusculas
@@ -121,25 +121,25 @@ class FormAltaCarrera (forms.ModelForm):
     carrera=forms.CharField(
         label='CARRERA',
         max_length=40, 
-        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
         widget=forms.TextInput(attrs={'placeholder':'nombre'})
     )
     plan_de_estudio=forms.CharField(
         label='PLAN DE ESTUDIO (AÑO)',
         max_length=4, 
-        #validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'año'})                           
     )
     resolucion_rectoral=forms.CharField(
         label='RESOLUCION RECTORAL DE APROBACION',
         max_length=20, 
-        #validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='!')],
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='!')],
         widget=forms.TextInput(attrs={'placeholder':'codigo'})
     )
     cantidad_asignaturas=forms.CharField(
         label='CANTIDAD TOTAL DE MATERIAS',
         max_length=2, 
-        #validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
         widget=forms.TextInput(attrs={'placeholder':'cantidad'})
     )
     
@@ -148,7 +148,8 @@ class FormAltaCarrera (forms.ModelForm):
         fields='__all__'
         labels={
             'tipo_carrera':'TIPO DE CARRERA',
-            'codigo':'CODIGO'
+            'codigo':'CODIGO',
+            "asignatura":'',
         }
         OPCIONES_TIPO_CARRERA=(
             ('', 'Seleccione un tipo'),
@@ -164,19 +165,17 @@ class FormAltaCarrera (forms.ModelForm):
             'codigo': forms.TextInput(attrs={
                 'style': 'font-size: 16px',
                 'placeholder':'iniciales carrera',
-                'data-mask':'AA'})            
-        }
-
-class AltaAsignaturas(forms.ModelForm):      
-    class Meta:
-        model=Asignatura
-        fields='__all__'
-        labels={"asignatura":''}
-        widgets= {
+                'data-mask':'AA'}),
             'asignatura': forms.TextInput(attrs={
                 'style': 'font-size: 14px',
-                'placeholder':'nombre asignatura'})          
+                'placeholder':'nombre asignatura'})            
         }
+    def __init__(self, *args, **kwargs):
+        super(FormAltaCarrera,self).__init__(*args, **kwargs)
+        
+        error_messages = ['carrera','plan_de_estudio', 'resolucion_rectoral', 'cantidad_asignaturas', 'tipo_carrera', 'codigo', 'asignatura']
+        for field in error_messages:
+            self.fields[field].error_messages.update({'required':'Este campo no puede estar vacio'})
 
 class FormReporteCarrera (forms.Form):
     carrera=forms.CharField(required=True)
