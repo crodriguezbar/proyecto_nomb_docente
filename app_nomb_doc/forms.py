@@ -1,8 +1,9 @@
 from dataclasses import fields
 from datetime import datetime
 from django import forms
-from app_nomb_doc.models import Carreras, Docentes
+from app_nomb_doc.models import Carreras, Docentes, Asignaturas
 from django.core.validators import RegexValidator
+from django.forms import inlineformset_factory
 
 #Letras minusculas
 class LetrasMinusculas(forms.CharField): #OK
@@ -133,7 +134,6 @@ class FormAltaCarrera (forms.ModelForm):
     resolucion_rectoral=forms.CharField(
         label='RESOLUCION RECTORAL DE APROBACION',
         max_length=20, 
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='!')],
         widget=forms.TextInput(attrs={'placeholder':'codigo'})
     )
     cantidad_asignaturas=forms.CharField(
@@ -149,7 +149,6 @@ class FormAltaCarrera (forms.ModelForm):
         labels={
             'tipo_carrera':'TIPO DE CARRERA',
             'codigo':'CODIGO',
-            "asignatura":'',
         }
         OPCIONES_TIPO_CARRERA=(
             ('', 'Seleccione un tipo'),
@@ -165,17 +164,61 @@ class FormAltaCarrera (forms.ModelForm):
             'codigo': forms.TextInput(attrs={
                 'style': 'font-size: 16px',
                 'placeholder':'iniciales carrera',
-                'data-mask':'AA'}),
-            'asignatura': forms.TextInput(attrs={
-                'style': 'font-size: 14px',
-                'placeholder':'nombre asignatura'})            
+                'data-mask':'AA'}),        
         }
     def __init__(self, *args, **kwargs):
         super(FormAltaCarrera,self).__init__(*args, **kwargs)
         
-        error_messages = ['carrera','plan_de_estudio', 'resolucion_rectoral', 'cantidad_asignaturas', 'tipo_carrera', 'codigo', 'asignatura']
+        error_messages = ['carrera','plan_de_estudio', 'resolucion_rectoral', 'cantidad_asignaturas', 'tipo_carrera', 'codigo']
         for field in error_messages:
             self.fields[field].error_messages.update({'required':'Este campo no puede estar vacio'})
+
+class FormAltaAsignaturas(forms.ModelForm):
+    anio_semestre=forms.CharField(
+        label='',
+        widget=forms.TextInput(attrs={
+                'style': 'font-size: 16px',
+                'placeholder':'año-semestre',
+                'data-mask':'0-0'}),
+        required=False
+    )  
+    asignatura1=forms.CharField(
+        label='',
+        required=False,
+        max_length=40, 
+        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
+    asignatura2=forms.CharField(
+        label='',
+        required=False,
+        max_length=40, 
+        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
+    asignatura3=forms.CharField(
+        label='',
+        required=False,
+        max_length=40, 
+        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
+    asignatura4=forms.CharField(
+        label='',
+        required=False,
+        max_length=40, 
+        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
+    asignatura5=forms.CharField(
+        label='',
+        required=False,
+        max_length=40, 
+        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
+        
+    class Meta:
+        model=Asignaturas
+        fields = '__all__'
+        labels={
+            'anio_semestre':'',
+        }
 
 class FormReporteCarrera (forms.Form):
     carrera=forms.CharField(required=True)

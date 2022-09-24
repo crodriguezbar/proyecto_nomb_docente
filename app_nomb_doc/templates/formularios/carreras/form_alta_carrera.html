@@ -10,90 +10,32 @@
         <div class="card border-dark p-3"> 
             <span class="btn btn-secondary mb-4"><strong>ALTA CARRERA</strong></span>   
             <div class="row">
-                <div class="col-4"><strong>{{formulario.carrera|as_crispy_field}}</strong></div>
-                <div class="col-4"><strong>{{formulario.codigo|as_crispy_field}}</strong></div>
-                <div class="col-4"><strong>{{formulario.tipo_carrera|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{form.carrera|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{form.codigo|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{form.tipo_carrera|as_crispy_field}}</strong></div>
             </div>
             <div class="row">
-                <div class="col-4"><strong>{{formulario.plan_de_estudio|as_crispy_field}}</strong></div>
-                <div class="col-4"><strong>{{formulario.resolucion_rectoral|as_crispy_field}}</strong></div>
-                <div class="col-4"><strong>{{formulario.cantidad_asignaturas|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{form.plan_de_estudio|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{form.resolucion_rectoral|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{form.cantidad_asignaturas|as_crispy_field}}</strong></div>
             </div>
             <hr style="border: 1px solid black;">
-
-            <span class="btn btn-secondary mb-4">ESTRUCTURA CURRICULAR DE LA CARRERA</span>   
-            <div class="row">
-                <div class="col-2 fw-bolder">1°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
+            <span class="btn btn-secondary mb-4">ESTRUCTURA CURRICULAR DE LA CARRERA</span> 
+            {{ form2.management_form|crispy }}
+            {% for form2 in form2 %}
+                <div class="row" >
+                    <div class="col-2">{{form2.anio_semestre|as_crispy_field}}</div>
+                    <div class="col-2">{{form2.asignatura1|as_crispy_field}}</div>
+                    <div class="col-2">{{form2.asignatura2|as_crispy_field}}</div>
+                    <div class="col-2">{{form2.asignatura3|as_crispy_field}}</div>
+                    <div class="col-2">{{form2.asignatura4|as_crispy_field}}</div>
+                    <div class="col-2">{{form2.asignatura5|as_crispy_field}}</div>
+                </div>
+                <div class="row" id='formularioagregar'></div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button onclick="AgregarFila()" class="btn btn-outline-secondary btn-sm mt-1" style="width:80px">Agregar</button> 
             </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">1°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">2°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">2°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">3°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">3°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">4°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">4°AÑO, 2° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 fw-bolder">5°AÑO, 1° SEMESTRE</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-2">{{formulario.asignatura|as_crispy_field}}</div>
-            </div>
+            {% endfor %}
             <hr style="border: 1px solid black;">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button type="submit" class="btn btn-outline-secondary btn-lg mt-3" style="width:120px" value='Guardar'>Guardar</button> 
@@ -109,5 +51,14 @@
         </div>
     </form>
     </div>
+    <script>
+        function AgregarFila() {
+            var forms=document.querySelector ('#id_form-TOTAL_FORMS') 
+            var agregarfila = document.querySelector("#id_form-0-anio_semestre").cloneNode(true);
+            agregarfila.name='form-'+forms.value+'-anio_semestre';
+            agregarfila.id='id_form-'+forms.value+'-anio_semestre';
+            document.querySelector('#formularioagregar').appendChild(agregarfila);
+        }
+    </script>
 </body>
 {% endblock %}

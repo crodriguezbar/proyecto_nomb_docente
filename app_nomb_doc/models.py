@@ -33,12 +33,25 @@ class Carreras(models.Model):
     plan_de_estudio=models.IntegerField()
     resolucion_rectoral=models.CharField(max_length=20) 
     cantidad_asignaturas=models.IntegerField()
-    asignatura=models.CharField(max_length=40)
     
     def clean(self):
         self.carrera = self.carrera.capitalize()
-        self.asignatura = self.asignatura.capitalize()
     
+class Asignaturas (Carreras):
+    anio_semestre=models.CharField(max_length=40)
+    asignatura1=models.CharField(max_length=40)
+    asignatura2=models.CharField(max_length=40)
+    asignatura3=models.CharField(max_length=40)
+    asignatura4=models.CharField(max_length=40)
+    asignatura5=models.CharField(max_length=40)
+    
+    def clean(self):
+        self.asignatura1 = self.asignatura1.capitalize()
+        self.asignatura2 = self.asignatura2.capitalize()
+        self.asignatura3 = self.asignatura3.capitalize()
+        self.asignatura4 = self.asignatura4.capitalize()
+        self.asignatura5 = self.asignatura5.capitalize()
+        
 class Comisiones(models.Model):
     carrera=models.CharField(max_length=40)
     asignatura=models.CharField(max_length=40)

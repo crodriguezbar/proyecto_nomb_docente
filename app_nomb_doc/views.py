@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from app_nomb_doc.models import Carreras, Comisiones, Docentes
-from app_nomb_doc.forms import FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
-from django.views.generic.list import ListView 
+from app_nomb_doc.models import Carreras, Comisiones, Docentes, Asignaturas
+from app_nomb_doc.forms import FormAltaCarrera, FormAltaAsignaturas, FormAltaComisiones, FormAltaDocente, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
+from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.decorators import login_required
+from django.forms import formset_factory
 
 # Create your views here.
 
@@ -127,28 +128,65 @@ def editar_docente(request, dni):
     """
 
 #CARRERAS
-@login_required
 def alta_carrera(request):
-    formulario=FormAltaCarrera(request.POST or None)
-    if formulario.is_valid():
-        data = formulario.cleaned_data
-        alta_carrera1=Carreras(
+    form=FormAltaCarrera (request.POST or None)
+    form_set=formset_factory(FormAltaAsignaturas, extra=1)
+    form2=form_set (request.POST or None)
+    if form.is_valid() and form2.is_valid():
+        data=form.cleaned_data
+        data2=form2.cleaned_data
+        alta_carrera=Carreras(
             carrera=data.get('carrera'), 
             codigo=data.get('codigo'), 
-            tipo_carrera=data.get('tipo_carrera'), 
-            plan_de_estudio=data.get('plan_de_estudio'), 
+            tipo_carrera=data.get('tipo_carrera'),
+            plan_de_estudio=data.get('plan_de_estudio'),
             resolucion_rectoral=data.get('resolucion_rectoral'), 
             cantidad_asignaturas=data.get('cantidad_asignaturas'),
-            asignatura=data.get('asignatura'),
         )
-        alta_carrera1.save() 
-        messages.success(request, 'La carrera %s (plan: %s) ha sido registrada exitosamente.!' % (alta_carrera1.carrera, alta_carrera1.plan_de_estudio))
+        alta_asignaturas=Asignaturas(
+            anio_semestre= data2.get('anio_semestre'),
+            asignatura1=data2.get('asignatura1'),
+            asignatura2=data2.get('asignatura2'),
+            asignatura3=data2.get('asignatura3'),
+            asignatura4=data2.get('asignatura4'),
+            asignatura5=data2.get('asignatura5'),
+        )
+        alta_carrera.save(commit=False)
+        alta_carrera.carrera=alta_asignaturas.save()
+        alta_carrera.save()
+        messages.success(request, 'La Carrera %s (Plan de estudio: %s) ha sido registrada exitosamente.!' % (alta_carrera.carrera, alta_carrera.plan_de_estudio))
         return redirect ('/altacarrera')
     contexto={
-        'formulario':formulario,
+        'form': form,
+        'form2': form2,
     }
     return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
+"""class AltaCarrera(CreateView):
+    model=Asignaturas
+    template_name = 'formularios/carreras/form_alta_carrera.html'
+    form_class = FormAltaAsignaturas
+    second_form_class = FormAltaCarrera
+    success_url= '/altacarrera'
+    
+    def get_context_data(self, **kwargs):
+        context = super(AltaCarrera, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context["form"] = self.form_class(self.request.GET)
+        if 'form2' not in context:
+            context["form2"] = self.second_form_class(self.request.GET)
+        return context
 
+    def post(self, request, *args, **kwargs):
+        self.objects = self.get_object 
+        form = self.form_class(request.POST)
+        form2 = self.second_form_class(request.POST) 
+        if form.is_valid() and form2.is_valid():  
+           alta=form.save(commit=False)  
+           alta.carrera=form2.save()
+           alta.save() 
+           return redirect('/altacarrera')
+        return self.render_to_response(self.get_context_data(form=form, form2=form2))
+"""
 def reporte_carrera(request):
     if request.method == 'GET':
         r_carrera=FormReporteCarrera(request.GET)   
