@@ -39,6 +39,11 @@
                 <a href="{% url "altadocente" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
             </div>
         {% endif %}
+        {% if message.tags == 'info' %}
+        <div class="text-center alert alert-danger alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+            <a href="{% url "altadocente" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
+        </div>
+        {% endif %}
     {% endfor %}
         </div>
     </form>    

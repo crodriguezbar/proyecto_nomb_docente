@@ -18,14 +18,19 @@ class Docentes(models.Model):
     
     # Primera letra mayuscula
     def clean(self):
-        self.nombre = self.nombre.capitalize()
-        self.apellido = self.apellido.capitalize() 
+        self.nombre = self.nombre.title()
+        self.apellido = self.apellido.title() 
         self.titulo_grado = self.titulo_grado.capitalize()
         self.titulo_posgrado = self.titulo_posgrado.capitalize()
      
     def __str__(self):
         return f'Nombre: {self.nombre} Apellido: {self.apellido} DNI: {self.dni} Alta: {self.fecha_alta}'
     
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Docente"
+        verbose_name_plural="Docentes"
+        db_table="Docentes"
+   
 class Carreras(models.Model):   
     carrera=models.CharField(max_length=40)
     codigo=models.CharField(max_length=20)
@@ -37,13 +42,33 @@ class Carreras(models.Model):
     def clean(self):
         self.carrera = self.carrera.capitalize()
     
-class Asignaturas (Carreras):
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Carrera"
+        verbose_name_plural="Carreras"
+        db_table="Carreras"
+
+        
+class Comisiones(models.Model):
+    anio=models.CharField(max_length=40, verbose_name="Año")#verbose hace que se muestre la denominacion que deseeo en admin
+    semestre=models.CharField(max_length=40, verbose_name="Semestre")
+    comision=models.CharField(max_length=40, verbose_name="Comision")
+    modalidad=models.CharField(max_length=40, verbose_name="Modalidad")
+    horario=models.CharField(max_length=40, verbose_name="Horario")
+    
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Comision"
+        verbose_name_plural="Comisiones"
+        db_table="Comisiones"
+
+
+class Asignaturas (models.Model):
     anio_semestre=models.CharField(max_length=40)
     asignatura1=models.CharField(max_length=40)
     asignatura2=models.CharField(max_length=40)
     asignatura3=models.CharField(max_length=40)
     asignatura4=models.CharField(max_length=40)
     asignatura5=models.CharField(max_length=40)
+    comision=models.ForeignKey(Comisiones, null=True, blank=True, on_delete=models.CASCADE) #establezco la relacion entre los modelos
     
     def clean(self):
         self.asignatura1 = self.asignatura1.capitalize()
@@ -51,11 +76,9 @@ class Asignaturas (Carreras):
         self.asignatura3 = self.asignatura3.capitalize()
         self.asignatura4 = self.asignatura4.capitalize()
         self.asignatura5 = self.asignatura5.capitalize()
-        
-class Comisiones(models.Model):
-    carrera=models.CharField(max_length=40)
-    asignatura=models.CharField(max_length=40)
-    codigo=models.CharField(max_length=40)
-    comision=models.CharField(max_length=40)
-    modalidad=models.CharField(max_length=40)
-    horario=models.CharField(max_length=40)
+    
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Asignatura"
+        verbose_name_plural="Asignaturas"
+        db_table="Asignaturas"
+

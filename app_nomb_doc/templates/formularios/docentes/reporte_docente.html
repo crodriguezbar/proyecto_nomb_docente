@@ -22,7 +22,7 @@
         <br>
         {% for message in messages %}
             {% if message.tags == 'success' %}
-                <div class="text-center alert alert-danger alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+                <div class="text-center alert alert-primary alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
                     <a href="{% url "reportedocente" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
                 </div>
             {% endif %}
