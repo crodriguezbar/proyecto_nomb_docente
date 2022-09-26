@@ -30,24 +30,7 @@ class Docentes(models.Model):
         verbose_name="Docente"
         verbose_name_plural="Docentes"
         db_table="Docentes"
-   
-class Carreras(models.Model):   
-    carrera=models.CharField(max_length=40)
-    codigo=models.CharField(max_length=20)
-    tipo_carrera=models.CharField(max_length=40)
-    plan_de_estudio=models.IntegerField()
-    resolucion_rectoral=models.CharField(max_length=20) 
-    cantidad_asignaturas=models.IntegerField()
     
-    def clean(self):
-        self.carrera = self.carrera.capitalize()
-    
-    class Meta: #Para personalizar datos en admin
-        verbose_name="Carrera"
-        verbose_name_plural="Carreras"
-        db_table="Carreras"
-
-        
 class Comisiones(models.Model):
     anio=models.CharField(max_length=40, verbose_name="Año")#verbose hace que se muestre la denominacion que deseeo en admin
     semestre=models.CharField(max_length=40, verbose_name="Semestre")
@@ -82,3 +65,19 @@ class Asignaturas (models.Model):
         verbose_name_plural="Asignaturas"
         db_table="Asignaturas"
 
+class Carreras(models.Model):   #OK
+    carrera=models.CharField(max_length=40)
+    codigo=models.CharField(max_length=20)
+    tipo_carrera=models.CharField(max_length=40)
+    plan_de_estudio=models.IntegerField()
+    resolucion_rectoral=models.CharField(max_length=20) 
+    cantidad_asignaturas=models.IntegerField()
+    asignaturas=models.ForeignKey(Asignaturas, null=True, blank=True, on_delete=models.CASCADE)
+    
+    def clean(self):
+        self.carrera = self.carrera.capitalize()
+    
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Carrera"
+        verbose_name_plural="Carreras"
+        db_table="Carreras"

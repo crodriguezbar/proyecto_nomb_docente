@@ -9,7 +9,7 @@ urlpatterns = [
     path('eliminar_docente/<dni>', eliminar_docente, name='eliminardocente'),
     path('editar_docente/<dni>', editar_docente, name='editardocente'),
     #CARRERAS
-    path('altacarrera/', alta_carrera, name='altacarrera'), 
+    path('altacarrera/', AltaCarrera.as_view(), name='altacarrera'), 
     path('reportecarreras/', reporte_carrera, name='reportealtacarerras'),
     #COMISIONES
     path('altacomision/', alta_comision, name='altacomision'),

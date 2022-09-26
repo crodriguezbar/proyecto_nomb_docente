@@ -5,6 +5,7 @@ from app_nomb_doc.forms import FormAltaCarrera, FormAltaAsignaturas, FormAltaCom
 from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -91,17 +92,40 @@ def editar_docente(request, dni):
     }
     return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
 
-"""class ReporteDocente(ListView):
-    model=Docentes
-    template_name: 'reporte_docente.html'
-    paginate_by: 5
-    def get(self, request, *args, **kwargs):
-        dni=request.POST.get('dni')
-        dnis=dni.objetcs.filter(dni__contains=dni)
-    """
-
 #CARRERAS
-def alta_carrera(request):
+"""
+class AltaCarrera(FormView):
+    template_name = 'formularios/carreras/form_alta_carrera.html'
+    def get(self, request, *args, **kwargs):
+        carrera_form = FormAltaCarrera
+        carrera_form.prefix = 'carrera_form'
+        asignaturas_form = formset_factory(FormAltaAsignaturas, extra=1)
+        asignaturas_form.prefix = 'asignaturas_form'
+        contexto={
+        'carrera_form': carrera_form,
+        'asignaturas_form': asignaturas_form,
+        }
+        return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
+
+    def post(self, request, *args, **kwargs):
+        carrera_form = FormAltaCarrera(self.request.POST, prefix='carrera_form')
+        asignaturas_form = FormAltaAsignaturas(self.request.POST, prefix='asignaturas_form ')
+
+        if carrera_form.is_valid() and asignaturas_form.is_valid():
+            alta=carrera_form.save(commit=False)  
+            alta.asignaturas=asignaturas_form.save()
+            alta.save() 
+            return redirect('/altacarrera')  
+        else:
+            return self.form_invalid(carrera_form, asignaturas_form, **kwargs)
+    
+    def form_invalid(self, carrera_form, asignaturas_form, **kwargs):
+        carrera_form.prefix='carrera_form'
+        asignaturas_form.prefix='asignaturas_form'
+        return render (self.get_context_data({'carrera_form': carrera_form, 'asignaturas_form': asignaturas_form}))
+"""   
+
+"""def alta_carrera(request):
     form=FormAltaCarrera (request.POST or None)
     form_set=formset_factory(FormAltaAsignaturas, extra=1)
     form2=form_set (request.POST or None)
@@ -129,37 +153,36 @@ def alta_carrera(request):
         alta_carrera.save()
         messages.success(request, 'La Carrera %s (Plan de estudio: %s) ha sido registrada exitosamente.!' % (alta_carrera.carrera, alta_carrera.plan_de_estudio))
         return redirect ('/altacarrera')
+    print('no valido')
     contexto={
         'form': form,
         'form2': form2,
     }
     return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
-"""class AltaCarrera(CreateView):
-    model=Asignaturas
-    template_name = 'formularios/carreras/form_alta_carrera.html'
-    form_class = FormAltaAsignaturas
-    second_form_class = FormAltaCarrera
-    success_url= '/altacarrera'
-    
-    def get_context_data(self, **kwargs):
-        context = super(AltaCarrera, self).get_context_data(**kwargs)
-        if 'form' not in context:
-            context["form"] = self.form_class(self.request.GET)
-        if 'form2' not in context:
-            context["form2"] = self.second_form_class(self.request.GET)
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.objects = self.get_object 
-        form = self.form_class(request.POST)
-        form2 = self.second_form_class(request.POST) 
-        if form.is_valid() and form2.is_valid():  
-           alta=form.save(commit=False)  
-           alta.carrera=form2.save()
-           alta.save() 
-           return redirect('/altacarrera')
-        return self.render_to_response(self.get_context_data(form=form, form2=form2))
 """
+class AltaCarrera(CreateView):
+    model = Carreras
+    fields = '__all__'
+    template_name = 'formularios/carreras/form_alta_carrera.html'   
+    success_url = reverse_lazy('altacarrera')
+    extra_context = {
+        'carrera_form': FormAltaCarrera,
+        'asignaturas_form': FormAltaAsignaturas,
+    } 
+    def post(self, request, *args, **kwargs): 
+        self.object = self.get_object
+        data_carrera_form = FormAltaCarrera(request.POST)
+        data_asignaturas_form = FormAltaAsignaturas(request.POST) 
+
+        if data_carrera_form.is_valid() and data_asignaturas_form.is_valid(): 
+            data_carrera_form = data_carrera_form.save(commit=False) 
+            data_carrera_form.asignaturas = data_asignaturas_form.save() 
+            data_carrera_form.save() 
+            messages.success(request, 'La Carrera %s (Plan de estudio: %s) ha sido registrada exitosamente.!' % (data_carrera_form.carrera, data_carrera_form.plan_de_estudio))
+            return redirect (self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(carrera_form=data_carrera_form, asignaturas_form=data_asignaturas_form))
+
 def reporte_carrera(request):
     if request.method == 'GET':
         r_carrera=FormReporteCarrera(request.GET)   
