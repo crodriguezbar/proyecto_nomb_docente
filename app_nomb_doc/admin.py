@@ -21,6 +21,7 @@ class AdminDocentes(admin.ModelAdmin):
 @admin.register(Carreras)
 class AdminCarreras(admin.ModelAdmin):
     list_display=(
+        'id', 
         'carrera', 
         'plan_de_estudio', 
         'tipo_carrera', 
@@ -35,14 +36,12 @@ class AdminCarreras(admin.ModelAdmin):
 @admin.register(Asignaturas)
 class AdminAsignaturas(admin.ModelAdmin):
     list_display=(
+        'id', 
         'anio_semestre', 
-        'asignatura1', 
-        'asignatura2', 
-        'asignatura3', 
-        'asignatura4',
-        'asignatura5',
+        'asignatura', 
+        
     )
-    search_fields= ('anio_semestre', 'asignatura1', 'asignatura2', 'asignatura3', 'asignatura4', 'asignatura5',)
+    search_fields= ('anio_semestre', 'asignatura')
     list_display_links = ('anio_semestre',)
     list_filter = ('anio_semestre',)
     list_per_page = 10

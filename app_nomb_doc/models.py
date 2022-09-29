@@ -31,48 +31,13 @@ class Docentes(models.Model):
         verbose_name_plural="Docentes"
         db_table="Docentes"
     
-class Comisiones(models.Model):
-    anio=models.CharField(max_length=40, verbose_name="Año")#verbose hace que se muestre la denominacion que deseeo en admin
-    semestre=models.CharField(max_length=40, verbose_name="Semestre")
-    comision=models.CharField(max_length=40, verbose_name="Comision")
-    modalidad=models.CharField(max_length=40, verbose_name="Modalidad")
-    horario=models.CharField(max_length=40, verbose_name="Horario")
-    
-    class Meta: #Para personalizar datos en admin
-        verbose_name="Comision"
-        verbose_name_plural="Comisiones"
-        db_table="Comisiones"
-
-
-class Asignaturas (models.Model):
-    anio_semestre=models.CharField(max_length=40)
-    asignatura1=models.CharField(max_length=40)
-    asignatura2=models.CharField(max_length=40)
-    asignatura3=models.CharField(max_length=40)
-    asignatura4=models.CharField(max_length=40)
-    asignatura5=models.CharField(max_length=40)
-    comision=models.ForeignKey(Comisiones, null=True, blank=True, on_delete=models.CASCADE) #establezco la relacion entre los modelos
-    
-    def clean(self):
-        self.asignatura1 = self.asignatura1.capitalize()
-        self.asignatura2 = self.asignatura2.capitalize()
-        self.asignatura3 = self.asignatura3.capitalize()
-        self.asignatura4 = self.asignatura4.capitalize()
-        self.asignatura5 = self.asignatura5.capitalize()
-    
-    class Meta: #Para personalizar datos en admin
-        verbose_name="Asignatura"
-        verbose_name_plural="Asignaturas"
-        db_table="Asignaturas"
-
 class Carreras(models.Model):   #OK
     carrera=models.CharField(max_length=40)
-    codigo=models.CharField(max_length=20)
+    codigo=models.CharField(max_length=20, unique=True)
     tipo_carrera=models.CharField(max_length=40)
     plan_de_estudio=models.IntegerField()
     resolucion_rectoral=models.CharField(max_length=20) 
     cantidad_asignaturas=models.IntegerField()
-    asignaturas=models.ForeignKey(Asignaturas, null=True, blank=True, on_delete=models.CASCADE)
     
     def clean(self):
         self.carrera = self.carrera.capitalize()
@@ -81,3 +46,40 @@ class Carreras(models.Model):   #OK
         verbose_name="Carrera"
         verbose_name_plural="Carreras"
         db_table="Carreras"
+
+class Asignaturas (models.Model):
+    anio_semestre=models.CharField(max_length=40)
+    asignatura=models.CharField(max_length=40)
+    codigo=models.ForeignKey(Carreras, null=True, blank=True, on_delete=models.CASCADE) #establezco la relacion entre los modelos
+    
+    def clean(self):
+        self.asignatura1 = self.asignatura1.title()
+        self.asignatura2 = self.asignatura2.title()
+        self.asignatura3 = self.asignatura3.title()
+        self.asignatura4 = self.asignatura4.title()
+        self.asignatura5 = self.asignatura5.title()
+    
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Asignatura"
+        verbose_name_plural="Asignaturas"
+        db_table="Asignaturas"
+
+
+class Comisiones(models.Model):
+    anio_academico=models.CharField(max_length=40, verbose_name="Año")#verbose hace que se muestre la denominacion que deseeo en admin
+    semestre_academico=models.CharField(max_length=40, verbose_name="Semestre")
+    comision=models.CharField(max_length=40, verbose_name="Comision")
+    modalidad=models.CharField(max_length=40, verbose_name="Modalidad")
+    horario=models.CharField(max_length=40, verbose_name="Horario")
+    fecha_creacion=models.DateField(auto_now_add=True)
+    codigo=models.ForeignKey(Carreras, null=True, blank=True, on_delete=models.CASCADE)
+    asignatura=models.ForeignKey(Asignaturas, null=True, blank=True, on_delete=models.CASCADE)
+    
+    class Meta: #Para personalizar datos en admin
+        verbose_name="Comision"
+        verbose_name_plural="Comisiones"
+        db_table="Comisiones"
+
+
+
+

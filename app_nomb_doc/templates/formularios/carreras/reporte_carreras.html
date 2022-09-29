@@ -1,0 +1,79 @@
+{% extends 'static/inicio.html' %}
+{% load crispy_forms_tags %}
+{% block contenido %} 
+
+<body>
+    <br>
+    <br>
+    <div class="container mt-18" style="width: 95%; font-size:14px">
+    <form action="" method="GET" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
+        <div class="card border-dark p-3"> 
+            <span class="btn btn-secondary mb-4"><strong>REPORTE CARRERAS</strong></span>   
+            <br>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th colspan='3'>CARRERA</th>
+                    <th scope="col">PLAN DE ESTUDIO</th>
+                    <th scope="col">TIPO DE CARRERA</th>
+                    <th scope="col">CODIGO</th>
+                    <th scope="col">RES. RECTORAL</th>
+                    <th scope="col">CANTIDAD DE ASIGNATURAS</th>
+                    <th scope="col">EDITAR</th>
+                    <th scope="col">ELIMINAR</th>
+                    <th scope="col">ASIGNATURAS</th>
+                </tr>
+                </thead>
+            {% for reporte in reporte_carrera %}
+            <tbody>     
+                <tr>
+                    <th scope="row" style="vertical-align:middle">{{reporte.id}}</th>
+                    <td colspan='3' style="vertical-align:middle">{{reporte.carrera}}</td> 
+                    <td style="vertical-align:middle">{{reporte.plan_de_estudio}}</td>
+                    <td style="vertical-align:middle">{{reporte.tipo_carrera}}</td>
+                    <td style="vertical-align:middle">{{reporte.codigo}}</td>
+                    <td style="vertical-align:middle">{{reporte.resolucion_rectoral}}</td>
+                    <td style="vertical-align:middle">{{reporte.cantidad_asignaturas}}</td>
+                    <td><a href="{% url 'editarcarrera' reporte.id %}" class="btn btn-outline-warning btn-sm mt-0" style="width:80px"href="#">Editar</td>
+                    <td><a href="{% url 'eliminarcarrera' reporte.id %}" class="btn btn-outline-danger btn-sm mt-0" style="width:80px" href="#">Eliminar</td>
+                    <td><a href="{% url 'listarasignaturas' reporte.id %}" class="btn btn-outline-primary btn-sm mt-0" style="width:80px" href="#">Ampliar</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+            </table>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        </div>
+        <!-- Mensaje desde views.py -->
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="text-center alert alert-primary alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+                    <a href="{% url "altadocente" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
+                </div>
+            {% endif %}
+            {% if message.tags == 'info' %}
+            <div class="text-center alert alert-danger alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+                <a href="{% url "altadocente" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </form>
+    </div>
+</body>
+{% endblock %}

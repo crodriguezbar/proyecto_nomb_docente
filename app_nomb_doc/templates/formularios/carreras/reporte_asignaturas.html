@@ -1,0 +1,62 @@
+{% extends 'static/inicio.html' %}
+{% load crispy_forms_tags %}
+{% block contenido %} 
+
+<body>
+    <br>
+    <br>
+    <div class="container mt-18" style="width: 95%; font-size:14px">
+    <form action="" method="GET" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
+        <div class="card border-dark p-3"> 
+            <span class="btn btn-secondary mb-4"><strong>REPORTE CARRERAS</strong></span>   
+            <br>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">AÑO-SEMESTRE</th>
+                    <th scope="col">ASIGNATURA</th>
+                    <th scope="col">ASIGNATURA</th>
+                    <th scope="col">ASIGNATURA</th>
+                    <th scope="col">ASIGNATURA</th>
+                    <th scope="col">ASIGNATURA</th>
+                </tr>
+                </thead>
+            {% for reporte in asignaturas %}
+            <tbody>     
+                <tr>
+                    <th style="vertical-align:middle">{{reporte.asignaturas.anio_semestre}}</th>
+                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura1}}</td> 
+                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura2}}</td>
+                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura3}}</td>
+                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura4}}</td>
+                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura5}}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+            </table>
+        <hr style="border: 1px solid black;">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url "reportealtacarerras" %}" type="button" class="btn btn-outline-secondary btn-sm mt-3" style="width:120px" value='Volver'>Volver</a> 
+        </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        </div>
+    </form>
+    </div>
+</body>
+{% endblock %}

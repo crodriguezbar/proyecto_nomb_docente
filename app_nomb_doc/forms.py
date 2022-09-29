@@ -1,9 +1,8 @@
 from dataclasses import fields
 from datetime import datetime
 from django import forms
-from app_nomb_doc.models import Carreras, Docentes, Asignaturas
+from app_nomb_doc.models import Carreras, Comisiones, Docentes, Asignaturas
 from django.core.validators import RegexValidator
-from django.forms import inlineformset_factory
 
 #Letras minusculas
 class LetrasMinusculas(forms.CharField): #OK
@@ -182,37 +181,13 @@ class FormAltaAsignaturas(forms.ModelForm):
                 'data-mask':'0-0'}),
         required=False
     )  
-    asignatura1=forms.CharField(
+    asignatura=forms.CharField(
         label='',
         required=False,
         max_length=40, 
         widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
-    asignatura2=forms.CharField(
-        label='',
-        required=False,
-        max_length=40, 
-        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
-    asignatura3=forms.CharField(
-        label='',
-        required=False,
-        max_length=40, 
-        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
-    asignatura4=forms.CharField(
-        label='',
-        required=False,
-        max_length=40, 
-        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
-    asignatura5=forms.CharField(
-        label='',
-        required=False,
-        max_length=40, 
-        widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
-        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
-        
+    
     class Meta:
         model=Asignaturas
         fields = '__all__'
@@ -224,41 +199,73 @@ class FormReporteCarrera (forms.Form):
     carrera=forms.CharField(required=True)
 
 #COMISIONES
-class FormAltaComisiones(forms.Form):
-    OPCIONES_SELECCION1 = (
-        ('Semi', 'Semipresencial'),
-        ('Dist', 'Distancia'),
+class FormAltaComisiones(forms.ModelForm):
+    anio_academico=forms.CharField(
+        max_length=4,
+        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        label='AÑO ACADEMICO',
+        widget=forms.TextInput(attrs={'placeholder':'año academico'}),
+        required=True
     )
-    OPCIONES_SELECCION2 = (
-        (15, '15 hs'),
-        (19, '19 hs'),
-    ) 
-    OPCIONES_SELECCION3 = (
-        ('COM-A', 'A'),
-        ('COM-B', 'B'),
-        ('COM-C', 'C'),
-        ('COM-D', 'D'),
-        ('COM-E', 'E'),
-        ('COM-F', 'F'),   
-    )     
-    carrera=forms.CharField(max_length=40, required=True)
-    asignatura=forms.CharField(max_length=20, required=True)
-    codigo=forms.CharField(max_length=20, required=True)
-    comision=forms.ChoiceField(
-        required=True,
-        choices=OPCIONES_SELECCION3,
-        widget= forms.RadioSelect()
-    )
-    modalidad=forms.ChoiceField(
-        required=True,
-        choices=OPCIONES_SELECCION1,
-        widget= forms.RadioSelect()
-    )
-    horario=forms.ChoiceField(
-        required=True,
-        choices=OPCIONES_SELECCION2,
-        widget= forms.RadioSelect()
-    )
-    
+    class Meta:
+        model= Comisiones
+        exclude=['fecha_creacion']
+        labels={
+            'semestre_academico':'SEMESTRE ACADEMICO',
+            'comision': 'COMISION',
+            'modalidad': 'MODALIDAD',
+            'horario': 'HORARIO',
+        }
+        OPCIONES_SEMESTRE = (
+            ('', 'Seleccione semestre'),
+            ('1° sem', '1° Semestre'),
+            ('2° sem', '2° Semestre'),
+        )
+        OPCIONES_MODALIDAD = (
+            ('', 'Seleccione modalidad'),
+            ('Semi', 'Semipresencial'),
+            ('Dist', 'Distancia'),
+        )
+        OPCIONES_HORARIO = (
+            ('', 'Seleccione horario'),
+            (15, '15 hs'),
+            (19, '19 hs'),
+        ) 
+        OPCIONES_COMISION = (
+            ('', 'Seleccione letra'),
+            ('COM-A', 'A'),
+            ('COM-B', 'B'),
+            ('COM-C', 'C'),
+            ('COM-D', 'D'),
+            ('COM-E', 'E'),
+            ('COM-F', 'F'),   
+        )     
+        widgets={
+            'semestre_academico' : forms.Select(
+                choices=OPCIONES_SEMESTRE,attrs={
+                'class': 'form-control'}),
+            'comision' : forms.Select(
+                choices=OPCIONES_COMISION,attrs={
+                'class': 'form-control'}),
+            'modalidad' : forms.Select(
+                choices=OPCIONES_MODALIDAD,attrs={
+                'class': 'form-control'}),  
+            'horario' : forms.Select(
+                choices=OPCIONES_HORARIO,attrs={
+                'class': 'form-control'}),    
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['asignatura'].queryset = Asignaturas.objects.none()
+        
+        if 'codigo' in self.data:
+            try: 
+                codigo_id=int(self.data.get('codigo'))
+                self.fields['codigo'].queryset = Asignaturas.objects.filter(codigo_id=codigo_id).order_by('codigo')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['codigo'].queryset = self.instance.codigo.asignatura_set.order_by('asignatura')
+            
 class FormReporteComisiones(forms.Form):
     carrera=forms.CharField(required=True)

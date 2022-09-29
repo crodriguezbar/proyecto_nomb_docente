@@ -14,19 +14,22 @@
     <div class="container mt-18" style="width: 95%; font-size:14px">
     <form action="" method="POST" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
-            <span class="btn btn-secondary mb-4">ALTA COMISION</span>   
+            <span class="btn btn-secondary mb-4">ALTA COMISIONES</span>   
             <div class="row">
-                <div class="col-4">{{formulario.carrera|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.asignatura|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.codigo|as_crispy_field}}</div>
+                <div class="col-3"><strong>{{formulario1.anio_academico|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario1.anio_academico|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.anio_academico|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.semestre_academico|as_crispy_field}}</strong></div>
             </div>
             <div class="row">
-                <div class="col-4">{{formulario.comision|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.modalidad|as_crispy_field}}</div>
-                <div class="col-4">{{formulario.horario|as_crispy_field}}</div>
+                <div class="col-4"><strong>{{formulario.comision|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.modalidad|as_crispy_field}}</strong></div>
+                <div class="col-4"><strong>{{formulario.horario|as_crispy_field}}</strong></div>
             </div>
             <hr style="border: 1px solid black;">
-            <button type="submit" class="btn btn-outline-secondary btn-sm mt-0" style="width:120px" value='Guardar'>Guardar</button>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-outline-secondary btn-sm mt-3" style="width:120px" value='Guardar'>Guardar</button> 
+            </div>
         </div>
     </form>
     </div>

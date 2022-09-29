@@ -93,73 +93,50 @@ def editar_docente(request, dni):
     return render(request, 'formularios/docentes/form_alta_docente.html', contexto)
 
 #CARRERAS
-"""
-class AltaCarrera(FormView):
-    template_name = 'formularios/carreras/form_alta_carrera.html'
-    def get(self, request, *args, **kwargs):
-        carrera_form = FormAltaCarrera
-        carrera_form.prefix = 'carrera_form'
-        asignaturas_form = formset_factory(FormAltaAsignaturas, extra=1)
-        asignaturas_form.prefix = 'asignaturas_form'
-        contexto={
-        'carrera_form': carrera_form,
-        'asignaturas_form': asignaturas_form,
-        }
-        return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
-
-    def post(self, request, *args, **kwargs):
-        carrera_form = FormAltaCarrera(self.request.POST, prefix='carrera_form')
-        asignaturas_form = FormAltaAsignaturas(self.request.POST, prefix='asignaturas_form ')
-
-        if carrera_form.is_valid() and asignaturas_form.is_valid():
-            alta=carrera_form.save(commit=False)  
-            alta.asignaturas=asignaturas_form.save()
-            alta.save() 
-            return redirect('/altacarrera')  
-        else:
-            return self.form_invalid(carrera_form, asignaturas_form, **kwargs)
-    
-    def form_invalid(self, carrera_form, asignaturas_form, **kwargs):
-        carrera_form.prefix='carrera_form'
-        asignaturas_form.prefix='asignaturas_form'
-        return render (self.get_context_data({'carrera_form': carrera_form, 'asignaturas_form': asignaturas_form}))
-"""   
-
-"""def alta_carrera(request):
-    form=FormAltaCarrera (request.POST or None)
-    form_set=formset_factory(FormAltaAsignaturas, extra=1)
-    form2=form_set (request.POST or None)
-    if form.is_valid() and form2.is_valid():
-        data=form.cleaned_data
-        data2=form2.cleaned_data
+def alta_carrera (request):
+    formulario=FormAltaCarrera (request.POST or None)
+    if formulario.is_valid():
+        data=formulario.cleaned_data
         alta_carrera=Carreras(
             carrera=data.get('carrera'), 
             codigo=data.get('codigo'), 
             tipo_carrera=data.get('tipo_carrera'),
             plan_de_estudio=data.get('plan_de_estudio'),
-            resolucion_rectoral=data.get('resolucion_rectoral'), 
-            cantidad_asignaturas=data.get('cantidad_asignaturas'),
+            resolucion_rectoral=data.get('resolucion_rectoral'),
+            cantidad_asignaturas=data.get('cantidad_asignaturas'), 
         )
-        alta_asignaturas=Asignaturas(
-            anio_semestre= data2.get('anio_semestre'),
-            asignatura1=data2.get('asignatura1'),
-            asignatura2=data2.get('asignatura2'),
-            asignatura3=data2.get('asignatura3'),
-            asignatura4=data2.get('asignatura4'),
-            asignatura5=data2.get('asignatura5'),
-        )
-        alta_carrera.save(commit=False)
-        alta_carrera.carrera=alta_asignaturas.save()
         alta_carrera.save()
-        messages.success(request, 'La Carrera %s (Plan de estudio: %s) ha sido registrada exitosamente.!' % (alta_carrera.carrera, alta_carrera.plan_de_estudio))
+        messages.success(request, 
+            'La Carrera %s (Plan de estudio: %s) ha sido registrada exitosamente.!' 
+            % (alta_carrera.carrera, alta_carrera.plan_de_estudio)
+        )
         return redirect ('/altacarrera')
-    print('no valido')
     contexto={
-        'form': form,
-        'form2': form2,
+        'formulario': formulario,
     }
     return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
-"""
+
+def alta_asignaturas (request):
+    formulario=FormAltaAsignaturas (request.POST or None)
+    if formulario.is_valid():
+        data=formulario.cleaned_data
+        alta_asignaturas=Asignaturas(
+            anio_semestre=data.get('anio_semestre'), 
+            asignatura=data.get('codigo'), 
+        )
+        alta_asignaturas.save()
+        messages.success(request, 
+            'Las asignaturas de la carrera ¡¡¡FALTA!!! han sido registradas exitosamente.!' 
+        )
+        return redirect ('/alta_asignaturas')
+    contexto={
+        'formulario': formulario,
+    }
+    return render(request, 'formularios/carreras/form_alta_asignaturas.html', contexto)
+
+def reporte_asignaturas (request):
+    pass
+
 class AltaCarrera(CreateView):
     model = Carreras
     fields = '__all__'
@@ -184,20 +161,37 @@ class AltaCarrera(CreateView):
             return self.render_to_response(self.get_context_data(carrera_form=data_carrera_form, asignaturas_form=data_asignaturas_form))
 
 def reporte_carrera(request):
-    if request.method == 'GET':
-        r_carrera=FormReporteCarrera(request.GET)   
-        if r_carrera.is_valid():
-            carrera=request.GET.get('carrera')
-            carrera=Carreras.objects.filter(carrera__icontains=carrera)
-            contexto={
-                'formulario': FormReporteCarrera(),
-                'carreras':carrera,
-            }
-            return render(request, 'formularios/carreras/reporte_carreras.html', contexto) 
+    reporte_carrera=Carreras.objects.all().order_by('carrera', 'plan_de_estudio').values()
+    return render(request, 'formularios/carreras/reporte_carreras.html', {'reporte_carrera': reporte_carrera})
+    
+def eliminar_carrera (request, id):
+    carrera_eliminar=Carreras.objects.get(id=id)
+    messages.success(request, "La carrera %s (%s) fue eliminada" % (carrera_eliminar.carrera, carrera_eliminar.plan_de_estudio))
+    carrera_eliminar.delete() 
+    return redirect('reportealtacarerras')
+
+def editar_carrera (request, id):
+    carrera_editar=Carreras.objects.get(id=id)
+    asignaturas_editar=Asignaturas.objects.get(id=id)
+    if request.method == 'POST':
+        formulario=FormAltaCarrera(request.POST, instance=carrera_editar)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Los datos de la carrera %s (%s) han sido actualizados exitosamente.!' % (carrera_editar.carrera, carrera_editar.plan_de_estudio))
+            return redirect('reportealtacarerras')
+        messages.info(request, 'Ningun campo puede estar vacio!') 
     contexto={
-        'formulario':FormReporteCarrera(),
+        'carrera_form':FormAltaCarrera(
+            instance=carrera_editar),
+        'asignaturas_form': FormAltaAsignaturas(
+            instance=asignaturas_editar),    
     }
-    return render(request, 'formularios/carreras/reporte_carreras.html',contexto) 
+    return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
+
+def listar_asignaturas (request, id):
+    reporte_asignaturas = Carreras.objects.select_related('asignaturas').filter(id=id) 
+    return render(request, 'formularios/carreras/reporte_asignaturas.html', {'asignaturas' : reporte_asignaturas})
+    
 
 #COMISIONES
 def alta_comision(request):
@@ -210,6 +204,7 @@ def alta_comision(request):
             return render(request, 'formularios/comisiones/form_alta_comision.html', {'formulario':FormAltaComisiones(), 'registro':'OK', 'comision_registrada': alta_comision1})
     contexto={
         'formulario':FormAltaComisiones(),
+       
         'registro':''
     }
     return render(request, 'formularios/comisiones/form_alta_comision.html', contexto)
@@ -229,3 +224,6 @@ def reporte_comisiones(request):
         'formulario':FormReporteComisiones(),
     }
     return render(request, 'formularios/comisiones/reporte_comisiones.html',contexto) 
+
+
+
