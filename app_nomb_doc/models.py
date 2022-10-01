@@ -39,6 +39,9 @@ class Carreras(models.Model):   #OK
     resolucion_rectoral=models.CharField(max_length=20) 
     cantidad_asignaturas=models.IntegerField()
     
+    def __str__(self):
+        return self.codigo
+    
     def clean(self):
         self.carrera = self.carrera.capitalize()
     
@@ -52,12 +55,11 @@ class Asignaturas (models.Model):
     asignatura=models.CharField(max_length=40)
     codigo=models.ForeignKey(Carreras, null=True, blank=True, on_delete=models.CASCADE) #establezco la relacion entre los modelos
     
+    def __str__(self):
+        return self.asignatura
+    
     def clean(self):
-        self.asignatura1 = self.asignatura1.title()
-        self.asignatura2 = self.asignatura2.title()
-        self.asignatura3 = self.asignatura3.title()
-        self.asignatura4 = self.asignatura4.title()
-        self.asignatura5 = self.asignatura5.title()
+        self.asignatura = self.asignatura.title()
     
     class Meta: #Para personalizar datos en admin
         verbose_name="Asignatura"

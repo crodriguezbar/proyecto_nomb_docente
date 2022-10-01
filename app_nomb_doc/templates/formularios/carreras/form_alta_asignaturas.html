@@ -10,8 +10,30 @@
         <div class="card border-dark p-3"> 
             <span class="btn btn-secondary mb-4"><strong>ALTA ASIGNATURAS</strong></span>   
             <div class="row">
-                <div class="col-4"><strong>{{formulario.anio_semestre|as_crispy_field}}</strong></div>
-                <div class="col-4"><strong>{{formulario.asignatura|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{% crispy formulario %}</strong></div>
+            </div>
+            <div class="row"> 
+                <div id="asignaturas-form-list"> 
+                    <div class="asignaturas-form">
+                        {{ formulario1.management_form }}  
+                        <div class="col-2"><strong>{% crispy formulario1 %}</strong></div>
+                        {{ formulario2.management_form }}
+                        {% for form2 in formulario2%}
+                            <div class="col-2"><strong>{% crispy form2 %}</strong></div>
+                        {% endfor%}
+                    </div> 
+                </div>   
+                <!-- FORMULARIOS VACIOS -->
+                <div class="col-2" id="empty-form" name=""><strong>{% crispy formulario1.empty_form %}</strong></div>
+                <div class="col-2" id="empty-form1" name=""><strong>{% crispy formulario2.empty_form %}</strong></div>
+                <div class="col-2" id="empty-form2" name=""><strong>{% crispy formulario2.empty_form %}</strong></div>
+                <div class="col-2" id="empty-form3" name=""><strong>{% crispy formulario2.empty_form %}</strong></div>
+                <div class="col-2" id="empty-form4" name=""><strong>{% crispy formulario2.empty_form %}</strong></div>
+                <div class="col-2" id="empty-form5" name=""><strong>{% crispy formulario2.empty_form %}</strong></div>
+                <!-- BUTTON AGREGAR -->
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" id='add-more' class="btn btn-outline-secondary btn-sm mt-3" style="width:80px">Agregar</button> 
+                </div>  
             </div>
             <hr style="border: 1px solid black;">
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -28,5 +50,26 @@
         </div>
     </form>
     </div>
+    <script>
+        const addMoreBtn = document.getElementById ('add-more') //relacionado con boton agregar OK
+        addMoreBtn.addEventListener ('click', (add_new_form)) //Si clickea el boton llama a una funcion agregar nuevo formulario
+
+        function add_new_form(event) {
+            if (event){
+                event.preventDefault() //para evitar que falle si type de boton = submite, pero este no es el caso
+            }
+            //aca empezamos a agregar un empty_form_element en html. 
+            const formCopyTarget = document.getElementById('asignaturas-form-list')
+            const emptyFormEl = document.getElementById ('empty-form').cloneNode(true) // 1° se agrega la contante emptyFormEl que lo relaciono con empty form y lo clono
+            const emptyFormEl1 = document.getElementById ('empty-form1').cloneNode(true)
+            const emptyFormEl2 = document.getElementById ('empty-form2').cloneNode(true)
+            const emptyFormEl3 = document.getElementById ('empty-form3').cloneNode(true)
+            const emptyFormEl4 = document.getElementById ('empty-form4').cloneNode(true)
+            const emptyFormEl5 = document.getElementById ('empty-form5').cloneNode(true)
+            emptyFormEl.setAttribute ("class", "asignaturas-form") //cambio la denominacion de la clase de "" a asignaturas-form 
+            formCopyTarget.append(emptyFormEl, emptyFormEl1, emptyFormEl2, emptyFormEl3, emptyFormEl4, emptyFormEl5)
+        }
+    </script>
 </body>
 {% endblock %}
+

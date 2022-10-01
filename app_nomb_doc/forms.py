@@ -172,28 +172,38 @@ class FormAltaCarrera (forms.ModelForm):
         for field in error_messages:
             self.fields[field].error_messages.update({'required':'Este campo no puede estar vacio'})
 
-class FormAltaAsignaturas(forms.ModelForm):
+#Forms Alta Asignaturas
+class FormCodigo(forms.ModelForm):
+    class Meta:
+        model=Asignaturas
+        exclude = ('anio_semestre', 'asignatura')
+        labels={
+            'codigo':'CODIGO',
+        }
+        
+class FormAnioSemestre(forms.ModelForm):
     anio_semestre=forms.CharField(
         label='',
         widget=forms.TextInput(attrs={
                 'style': 'font-size: 16px',
                 'placeholder':'año-semestre',
                 'data-mask':'0-0'}),
-        required=False
+        required=True
     )  
+    class Meta:
+        model=Asignaturas
+        exclude = ('codigo','asignatura')
+
+class FormAsignaturas(forms.ModelForm):
     asignatura=forms.CharField(
         label='',
         required=False,
         max_length=40, 
         widget=forms.TextInput(attrs={'placeholder':'asignatura'}),
         validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidos!')])
-    
     class Meta:
         model=Asignaturas
-        fields = '__all__'
-        labels={
-            'anio_semestre':'',
-        }
+        exclude = ('codigo','anio_semestre')
 
 class FormReporteCarrera (forms.Form):
     carrera=forms.CharField(required=True)
@@ -211,6 +221,8 @@ class FormAltaComisiones(forms.ModelForm):
         model= Comisiones
         exclude=['fecha_creacion']
         labels={
+            'codigo': 'CODIGO CARRERA',
+            'asignatura': 'ASIGNATURA',
             'semestre_academico':'SEMESTRE ACADEMICO',
             'comision': 'COMISION',
             'modalidad': 'MODALIDAD',
@@ -255,9 +267,8 @@ class FormAltaComisiones(forms.ModelForm):
                 'class': 'form-control'}),    
         }
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(FormAltaComisiones,self).__init__(*args, **kwargs)               
         self.fields['asignatura'].queryset = Asignaturas.objects.none()
-        
         if 'codigo' in self.data:
             try: 
                 codigo_id=int(self.data.get('codigo'))
@@ -266,6 +277,8 @@ class FormAltaComisiones(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields['codigo'].queryset = self.instance.codigo.asignatura_set.order_by('asignatura')
-            
+        
+ 
+
 class FormReporteComisiones(forms.Form):
     carrera=forms.CharField(required=True)

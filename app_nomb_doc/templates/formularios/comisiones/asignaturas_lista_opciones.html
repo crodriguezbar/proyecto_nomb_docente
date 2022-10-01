@@ -1,0 +1,4 @@
+<option value="">seleccione una opcion</option>
+{% for asig in asignaturas %}
+<option value="{{ asig.pk }}">{{ asig.asignatura }}</option>
+{% endfor %}

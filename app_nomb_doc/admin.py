@@ -38,8 +38,7 @@ class AdminAsignaturas(admin.ModelAdmin):
     list_display=(
         'id', 
         'anio_semestre', 
-        'asignatura', 
-        
+        'asignatura',      
     )
     search_fields= ('anio_semestre', 'asignatura')
     list_display_links = ('anio_semestre',)

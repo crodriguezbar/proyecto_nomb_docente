@@ -12,12 +12,12 @@
     {% endif %}
 
     <div class="container mt-18" style="width: 95%; font-size:14px">
-    <form action="" method="POST" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
+    <form action="" method="POST" id="comisionForm" data-asignaturas-url= "{% url 'ajaxcargarasignaturas' %}" class="card p-3 mt-5" autocomplete="off" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
             <span class="btn btn-secondary mb-4">ALTA COMISIONES</span>   
             <div class="row">
-                <div class="col-3"><strong>{{formulario1.anio_academico|as_crispy_field}}</strong></div>
-                <div class="col-3"><strong>{{formulario1.anio_academico|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.codigo|as_crispy_field}}</strong></div>
+                <div class="col-3"><strong>{{formulario.asignatura|as_crispy_field}}</strong></div>
                 <div class="col-3"><strong>{{formulario.anio_academico|as_crispy_field}}</strong></div>
                 <div class="col-3"><strong>{{formulario.semestre_academico|as_crispy_field}}</strong></div>
             </div>
@@ -40,5 +40,34 @@
         </div>
     </div>
     {% endif %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#id_codigo").change(function () {
+        const url = $("#comisionForm").attr("data-asignaturas-url");  // get the url of the `load_cities` view
+        const codigoId = $(this).val();  // get the selected country ID from the HTML input
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+            data: {
+                'codigo_id': countryId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+                $("#id_asignatura").html(data);  // replace the contents of the city input with the data that came from the server
+                /*
+
+                let html_data = '<option value="">---------</option>';
+                data.forEach(function (city) {
+                    html_data += `<option value="${city.id}">${city.name}</option>`
+                });
+                console.log(html_data);
+                $("#id_city").html(html_data);
+
+                */
+            }
+        });
+
+    });
+</script>
+
 </body>
 {% endblock %}
