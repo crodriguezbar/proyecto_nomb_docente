@@ -31,41 +31,33 @@
                 <button type="submit" class="btn btn-outline-secondary btn-sm mt-3" style="width:120px" value='Guardar'>Guardar</button> 
             </div>
         </div>
+    <br>  
+    <!-- Mensaje desde views.py -->
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="text-center alert alert-primary alert-dismissible fade show" role="alert"><stong>{{message}}</strong>
+                <a href="{% url "altacomision" %}" type="button" class="btn btn-close" data-bs-dismissible="alert" aria-label="Close"></a>
+            </div>
+        {% endif %}
+    {% endfor %}
     </form>
     </div>
-    {% if registrado %}
-    <div class="mt-5">
-        <div class="alert alert-success" role="alert">
-            La comision {{comision_registrada.comision}} correspondiente a la asignatura {{comision_registrada.asignatura}} de la carrera {{comision_registrada.carrera}} ha sido registrada existosamente.
-        </div>
-    </div>
-    {% endif %}
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-    $("#id_codigo").change(function () {
-        const url = $("#comisionForm").attr("data-asignaturas-url");  // get the url of the `load_cities` view
-        const codigoId = $(this).val();  // get the selected country ID from the HTML input
+    $("#id_codigo").change(function () { 
+        const url = $("#comisionForm").attr("data-asignaturas-url");  
+        const codigoId = $(this).val();  
 
-        $.ajax({                       // initialize an AJAX request
-            url: url,                    // set the url of the request (= /persons/ajax/load-cities/ )
+        $.ajax({                    
+            url: url,                    
             data: {
-                'codigo_id': countryId       // add the country id to the GET parameters
+                'codigo_id': codigoId      
             },
-            success: function (data) {   // `data` is the return of the `load_cities` view function
-                $("#id_asignatura").html(data);  // replace the contents of the city input with the data that came from the server
-                /*
-
-                let html_data = '<option value="">---------</option>';
-                data.forEach(function (city) {
-                    html_data += `<option value="${city.id}">${city.name}</option>`
-                });
-                console.log(html_data);
-                $("#id_city").html(html_data);
-
-                */
+            success: function (data) {  
+                console.log(data);
+                $("#id_asignatura").html(data);
             }
         });
-
     });
 </script>
 

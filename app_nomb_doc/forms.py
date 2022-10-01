@@ -267,16 +267,16 @@ class FormAltaComisiones(forms.ModelForm):
                 'class': 'form-control'}),    
         }
     def __init__(self, *args, **kwargs):
-        super(FormAltaComisiones,self).__init__(*args, **kwargs)               
-        self.fields['asignatura'].queryset = Asignaturas.objects.none()
+        super().__init__(*args, **kwargs)               
+        self.fields['asignatura'].queryset = Asignaturas.objects.none() #OK
         if 'codigo' in self.data:
             try: 
                 codigo_id=int(self.data.get('codigo'))
-                self.fields['codigo'].queryset = Asignaturas.objects.filter(codigo_id=codigo_id).order_by('codigo')
+                self.fields['asignatura'].queryset = Asignaturas.objects.filter(codigo_id=codigo_id).order_by('codigo')
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            self.fields['codigo'].queryset = self.instance.codigo.asignatura_set.order_by('asignatura')
+            self.fields['asignatura'].queryset = self.instance.codigo.asignatura_set.order_by('asignatura')
         
  
 

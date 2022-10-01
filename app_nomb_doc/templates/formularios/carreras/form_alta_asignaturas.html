@@ -5,6 +5,7 @@
 <body>
     <br>
     <br>
+
     <div class="container mt-18" style="width: 95%; font-size:14px">
     <form action="" method="POST" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
@@ -12,17 +13,17 @@
             <div class="row">
                 <div class="col-3"><strong>{% crispy formulario %}</strong></div>
             </div>
-            <div class="row"> 
-                <div id="asignaturas-form-list"> 
-                    <div class="asignaturas-form">
-                        {{ formulario1.management_form }}  
-                        <div class="col-2"><strong>{% crispy formulario1 %}</strong></div>
-                        {{ formulario2.management_form }}
-                        {% for form2 in formulario2%}
-                            <div class="col-2"><strong>{% crispy form2 %}</strong></div>
-                        {% endfor%}
-                    </div> 
-                </div>   
+            <div class="row" id="asignaturas-form-list"> 
+                <div class="asignaturas-form">
+                    {{ formulario1.management_form }}  
+                    <div class="col-2"><strong>{% crispy formulario1 %}</strong></div>
+                    {{ formulario2.management_form }}
+                    {% for form2 in formulario2%}
+                        <div class="col-2"><strong>{% crispy form2 %}</strong></div>
+                    {% endfor%}
+                </div> 
+            </div>  
+            <div class="row">
                 <!-- FORMULARIOS VACIOS -->
                 <div class="col-2" id="empty-form" name=""><strong>{% crispy formulario1.empty_form %}</strong></div>
                 <div class="col-2" id="empty-form1" name=""><strong>{% crispy formulario2.empty_form %}</strong></div>
@@ -52,22 +53,50 @@
     </div>
     <script>
         const addMoreBtn = document.getElementById ('add-more') //relacionado con boton agregar OK
+        const totalNewForms = document.getElementById ('id_form-TOTAL_FORMS')
         addMoreBtn.addEventListener ('click', (add_new_form)) //Si clickea el boton llama a una funcion agregar nuevo formulario
 
         function add_new_form(event) {
             if (event){
                 event.preventDefault() //para evitar que falle si type de boton = submite, pero este no es el caso
             }
+            const currentAsignaturasForm = document.getElementsByClassName('asignaturas-form')
+            const currentAsignaturasCount = currentAsignaturasForm.length + 1 
+            const currentAsignaturasCount1 = currentAsignaturasForm.length + 2
+            const currentAsignaturasCount2 = currentAsignaturasForm.length + 3
+            const currentAsignaturasCount3 = currentAsignaturasForm.length + 4
+            const currentAsignaturasCount4 = currentAsignaturasForm.length + 5
+            const currentAsignaturasCount5 = currentAsignaturasForm.length + 6
+            console.log(currentAsignaturasForm.length)
             //aca empezamos a agregar un empty_form_element en html. 
             const formCopyTarget = document.getElementById('asignaturas-form-list')
-            const emptyFormEl = document.getElementById ('empty-form').cloneNode(true) // 1° se agrega la contante emptyFormEl que lo relaciono con empty form y lo clono
-            const emptyFormEl1 = document.getElementById ('empty-form1').cloneNode(true)
-            const emptyFormEl2 = document.getElementById ('empty-form2').cloneNode(true)
-            const emptyFormEl3 = document.getElementById ('empty-form3').cloneNode(true)
-            const emptyFormEl4 = document.getElementById ('empty-form4').cloneNode(true)
-            const emptyFormEl5 = document.getElementById ('empty-form5').cloneNode(true)
-            emptyFormEl.setAttribute ("class", "asignaturas-form") //cambio la denominacion de la clase de "" a asignaturas-form 
-            formCopyTarget.append(emptyFormEl, emptyFormEl1, emptyFormEl2, emptyFormEl3, emptyFormEl4, emptyFormEl5)
+            const copyEmptyFormEl = document.getElementById ('empty-form').cloneNode(true) // 1° se agrega la contante emptyFormEl que lo relaciono con empty form y lo clono
+            const copyEmptyFormEl1 = document.getElementById ('empty-form1').cloneNode(true)
+            const copyEmptyFormEl2 = document.getElementById ('empty-form2').cloneNode(true)
+            const copyEmptyFormEl3 = document.getElementById ('empty-form3').cloneNode(true)
+            const copyEmptyFormEl4 = document.getElementById ('empty-form4').cloneNode(true)
+            const copyEmptyFormEl5 = document.getElementById ('empty-form5').cloneNode(true)
+            copyEmptyFormEl.setAttribute ("class", "col-2 asignaturas-form") //cambio la denominacion de la clase de "" a asignaturas-form 
+            copyEmptyFormEl1.setAttribute ("class", "col-2 asignaturas-form")
+            copyEmptyFormEl2.setAttribute ("class", "col-2 asignaturas-form")
+            copyEmptyFormEl3.setAttribute ("class", "col-2 asignaturas-form")
+            copyEmptyFormEl4.setAttribute ("class", "col-2 asignaturas-form")
+            copyEmptyFormEl5.setAttribute ("class", "col-2 asignaturas-form")
+            copyEmptyFormEl.setAttribute ("id", `form-${currentAsignaturasCount}`)
+            copyEmptyFormEl1.setAttribute ("id", `form-${currentAsignaturasCount1}`)
+            copyEmptyFormEl2.setAttribute ("id", `form-${currentAsignaturasCount2}`)
+            copyEmptyFormEl3.setAttribute ("id", `form-${currentAsignaturasCount3}`)
+            copyEmptyFormEl4.setAttribute ("id", `form-${currentAsignaturasCount4}`)
+            copyEmptyFormEl5.setAttribute ("id", `form-${currentAsignaturasCount5}`)
+            const regex = new RegExp('__prefix__', 'g')
+            copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex,currentAsignaturasCount)
+            copyEmptyFormEl1.innerHTML = copyEmptyFormEl1.innerHTML.replace(regex,currentAsignaturasCount1) 
+            copyEmptyFormEl2.innerHTML = copyEmptyFormEl2.innerHTML.replace(regex,currentAsignaturasCount2) 
+            copyEmptyFormEl3.innerHTML = copyEmptyFormEl3.innerHTML.replace(regex,currentAsignaturasCount3) 
+            copyEmptyFormEl4.innerHTML = copyEmptyFormEl4.innerHTML.replace(regex,currentAsignaturasCount4)  
+            copyEmptyFormEl5.innerHTML = copyEmptyFormEl5.innerHTML.replace(regex,currentAsignaturasCount5) 
+            totalNewForms.setAttribute('value', 1)
+            formCopyTarget.append(copyEmptyFormEl, copyEmptyFormEl1, copyEmptyFormEl2, copyEmptyFormEl3, copyEmptyFormEl4, copyEmptyFormEl5)
         }
     </script>
 </body>

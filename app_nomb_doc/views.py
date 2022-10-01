@@ -18,6 +18,7 @@ def alta_docente (request):
     formulario=FormAltaDocente (request.POST or None)
     if formulario.is_valid():
         data=formulario.cleaned_data
+
         alta_docente1=Docentes(
             nombre=data.get('nombre'), 
             apellido=data.get('apellido'), 
@@ -34,7 +35,7 @@ def alta_docente (request):
         )
         alta_docente1.save()
         messages.success(request, 'El docente %s, %s (%s) ha sido registrado exitosamente.!' % (alta_docente1.apellido, alta_docente1.nombre, alta_docente1.dni))
-        return redirect ('/altadocente')
+        return redirect ('/alta_docente')
     contexto={
         'formulario': formulario,
     }
@@ -152,15 +153,19 @@ def alta_asignaturas (request):
     formulario1=anio_semestre_formset (request.POST or None)
     asignatura_formset=formset_factory(FormAsignaturas,extra=0)
     formulario2=asignatura_formset (request.POST or None)
-    
-    if formulario.is_valid():
-        data=formulario.cleaned_data
-        alta_asignaturas=Asignaturas(
-            codigo=data.get('codigo'),
-            anio_semestre=data.get('anio_semestre'), 
-            asignatura=data.get('asignatura'), 
-        )
-        alta_asignaturas.save()
+    if request.method == 'POST':
+        print(request.POST)
+    if all([formulario.is_valid(), formulario1.is_valid(), formulario.is_valid()]):
+        carrera=formulario.cleaned_data
+        data1=formulario1.cleaned_data
+        data2=formulario2.cleaned_data
+        print(carrera,data1,data2)
+        alta_asignatura=Asignaturas(codigo=carrera.get('codigo'))
+        for anio_semestre in data1:
+            alta_asignatura=Asignaturas(anio_semestre=anio_semestre.get('anio_semestre'))
+            for asignatura in data2:
+                alta_asignatura=Asignaturas(asignatura=asignatura.get('asignatura'))
+                alta_asignatura.save()
         messages.success(request, 
             'Las asignaturas de la carrera ¡¡¡FALTA!!! han sido registradas exitosamente.!' 
         )
@@ -209,17 +214,26 @@ def editar_asignaturas (request, id):
   
 #COMISIONES
 def alta_comision(request):
-    if request.method == 'POST':
-        f_alta_comisiones=FormAltaComisiones(request.POST)
-        if f_alta_comisiones.is_valid():
-            data = f_alta_comisiones.cleaned_data
-            alta_comision1=Comisiones(codigo=data.get('codigo'), comision=data.get('comision'), modalidad=data.get('modalidad'), horario=data.get('horario'))
-            alta_comision1.save()    
-            return render(request, 'formularios/comisiones/form_alta_comision.html', {'formulario':FormAltaComisiones(), 'registro':'OK', 'comision_registrada': alta_comision1})
+    f_alta_comisiones=FormAltaComisiones(request.POST or None)
+    if f_alta_comisiones.is_valid():
+        data=f_alta_comisiones.cleaned_data
+        alta_comision=Comisiones(
+            anio_academico=data.get('anio_academico'), 
+            semestre_academico=data.get('semestre_academico'), 
+            comision=data.get('comision'),
+            modalidad=data.get('modalidad'),
+            horario=data.get('horario'),
+            codigo=data.get('codigo'), 
+            asignatura=data.get('asignatura'),
+        )
+        alta_comision.save()
+        messages.success(request, 
+            'La comision %s (Carrera: %s, Asignatura: %s, Modalidad: %s, Horario: %s) ha sido registrada exitosamente.!' 
+            % (alta_comision.comision, alta_comision.codigo, alta_comision.asignatura, alta_comision.modalidad, alta_comision.horario)
+        )
+        return redirect('altacomision')
     contexto={
         'formulario':FormAltaComisiones(),
-       
-        'registro':''
     }
     return render(request, 'formularios/comisiones/form_alta_comision.html', contexto)
 

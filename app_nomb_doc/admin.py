@@ -44,3 +44,20 @@ class AdminAsignaturas(admin.ModelAdmin):
     list_display_links = ('anio_semestre',)
     list_filter = ('anio_semestre',)
     list_per_page = 10
+    
+@admin.register(Comisiones)
+class AdminCarreras(admin.ModelAdmin):
+    list_display=(
+        'id', 
+        'codigo', 
+        'asignatura', 
+        'anio_academico', 
+        'semestre_academico', 
+        'comision',
+        'horario',
+        'fecha_creacion',
+    )
+    search_fields= ('codigo', 'asignatura', 'anio_academico')
+    list_display_links = ('codigo', 'asignatura')
+    list_filter = ('codigo', 'asignatura','anio_academico','comision')
+    list_per_page = 10

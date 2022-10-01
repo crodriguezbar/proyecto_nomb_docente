@@ -56,6 +56,7 @@ class Asignaturas (models.Model):
     codigo=models.ForeignKey(Carreras, null=True, blank=True, on_delete=models.CASCADE) #establezco la relacion entre los modelos
     
     def __str__(self):
+        self.asignatura = self.asignatura
         return self.asignatura
     
     def clean(self):
