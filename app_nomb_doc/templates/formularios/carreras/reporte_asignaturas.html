@@ -8,16 +8,19 @@
     <div class="container mt-18" style="width: 95%; font-size:14px">
     <form action="" method="GET" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
-            <span class="btn btn-secondary mb-4"><strong>REPORTE CARRERAS</strong></span>   
+            <span class="btn btn-secondary mb-4"><strong>REPORTE ASIGNATURAS</strong></span>   
             <br>
+            <div class="row">
+                <div class="col-4"><strong>{{formulario.codigo|as_crispy_field}}</strong></div>
+            </div>
+            <hr style="border: 1px solid black;">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-outline-secondary btn-lg mt-0" style="width:120px" value='Buscar'>Buscar</button>
+            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">AÑO-SEMESTRE</th>
-                    <th scope="col">ASIGNATURA</th>
-                    <th scope="col">ASIGNATURA</th>
-                    <th scope="col">ASIGNATURA</th>
-                    <th scope="col">ASIGNATURA</th>
                     <th scope="col">ASIGNATURA</th>
                 </tr>
                 </thead>
@@ -25,18 +28,14 @@
             <tbody>     
                 <tr>
                     <th style="vertical-align:middle">{{reporte.asignaturas.anio_semestre}}</th>
-                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura1}}</td> 
-                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura2}}</td>
-                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura3}}</td>
-                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura4}}</td>
-                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura5}}</td>
+                    <td style="vertical-align:middle">{{reporte.asignaturas.asignatura}}</td> 
                 </tr>
             </tbody>
             {% endfor %}
             </table>
         <hr style="border: 1px solid black;">
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a href="{% url "reportealtacarerras" %}" type="button" class="btn btn-outline-secondary btn-sm mt-3" style="width:120px" value='Volver'>Volver</a> 
+            <a href="" type="button" class="btn btn-outline-secondary btn-sm mt-3" style="width:120px" value='Volver'>Volver</a> 
         </div>
         <div class="pagination">
             <span class="step-links">

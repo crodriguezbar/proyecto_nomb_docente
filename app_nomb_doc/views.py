@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from app_nomb_doc.models import Carreras, Comisiones, Docentes, Asignaturas
-from app_nomb_doc.forms import FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormAnioSemestre, FormAsignaturas, FormCodigo, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
+from app_nomb_doc.forms import FormAltaCarrera, FormAltaComisiones, FormAltaDocente, FormAnioSemestre, FormAsignaturas, FormCodigo, FormReporteAsignatura, FormReporteCarrera, FormReporteComisiones, FormReporteDocente
 from django.views.generic.edit import CreateView, FormView
 from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory
@@ -47,9 +47,11 @@ def reporte_docente(request):
         dni=request.GET.get('dni')
         desde_fecha_alta=request.GET.get('desde_fecha_alta')
         hasta_fecha_alta=request.GET.get('hasta_fecha_alta')
-        if dni =="" and desde_fecha_alta=="":
+        if all([dni =="", desde_fecha_alta=="", hasta_fecha_alta==""]):
+            return redirect('reportedocente')
+        elif dni =="" and desde_fecha_alta=="":
             docentes=Docentes.objects.filter(fecha_alta__lte=hasta_fecha_alta) 
-            messages.info(request, "CRITERIO DE BUSQUEDA: hasta el %s" % (hasta_fecha_alta))
+            messages.info(request, "CRITERIO DE BUSQUEDA: hasta el %s" % (hasta_fecha_alta))       
         elif dni =="" and hasta_fecha_alta=="":
             docentes=Docentes.objects.filter(fecha_alta__gte=desde_fecha_alta)
             messages.info(request, "CRITERIO DE BUSQUEDA: desde el %s" % (desde_fecha_alta))
@@ -63,6 +65,7 @@ def reporte_docente(request):
             'formulario': FormReporteDocente(),
             'docentes':docentes,
         }
+        
         return render(request, 'formularios/docentes/reporte_docente.html', contexto) 
     contexto={
         'formulario':FormReporteDocente(),
@@ -95,6 +98,7 @@ def editar_docente(request, dni):
 
 #CARRERAS
 #Carreras
+@login_required
 def alta_carrera (request):
     formulario=FormAltaCarrera (request.POST or None)
     if formulario.is_valid():
@@ -121,32 +125,32 @@ def alta_carrera (request):
 def reporte_carrera(request):
     reporte_carrera=Carreras.objects.all().order_by('carrera', 'plan_de_estudio').values()
     return render(request, 'formularios/carreras/reporte_carreras.html', {'reporte_carrera': reporte_carrera})
-    
+
+@login_required   
 def eliminar_carrera (request, id): 
     carrera_eliminar=Carreras.objects.get(id=id)
     messages.success(request, "La carrera %s (%s) fue eliminada" % (carrera_eliminar.carrera, carrera_eliminar.plan_de_estudio))
     carrera_eliminar.delete() 
-    return redirect('reportealtacarerras')
+    return redirect('reportecarreras')
 
+@login_required
 def editar_carrera (request, id): 
     carrera_editar=Carreras.objects.get(id=id)
-    asignaturas_editar=Asignaturas.objects.get(id=id)
     if request.method == 'POST':
         formulario=FormAltaCarrera(request.POST, instance=carrera_editar)
         if formulario.is_valid():
             formulario.save()
             messages.success(request, 'Los datos de la carrera %s (%s) han sido actualizados exitosamente.!' % (carrera_editar.carrera, carrera_editar.plan_de_estudio))
-            return redirect('reportealtacarerras')
+            return redirect('reportecarreras')
         messages.info(request, 'Ningun campo puede estar vacio!') 
     contexto={
-        'carrera_form':FormAltaCarrera(
-            instance=carrera_editar),
-        'asignaturas_form': FormAltaAsignaturas(
-            instance=asignaturas_editar),    
+        'formulario':FormAltaCarrera(
+            instance=carrera_editar),  
     }
     return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
 
 #Asignaturas
+@login_required
 def alta_asignaturas (request):
     formulario=FormCodigo (request.POST or None)
     anio_semestre_formset=formset_factory(FormAnioSemestre,extra=0)
@@ -177,42 +181,34 @@ def alta_asignaturas (request):
     }
     return render(request, 'formularios/carreras/form_alta_asignaturas.html', contexto)
 
-def reporte_asignaturas (request, id):
-    reporte_asignaturas = Carreras.objects.select_related('asignaturas').filter(id=id) 
-    return render(request, 'formularios/carreras/reporte_asignaturas.html', {'asignaturas' : reporte_asignaturas})
+def reporte_asignaturas (request):
+    formulario=FormReporteAsignatura(request.GET or None)   
+    if formulario.is_valid():
+        codigo=request.GET.get('codigo')
+        if codigo =="":
+            return redirect('reporteasignaturas')
+        asignaturas=Asignaturas.objects.filter(codigo__contain=codigo) 
+        messages.info(request, "CRITERIO DE BUSQUEDA: hasta el %s" % (codigo))       
+        contexto={
+            'formulario': FormReporteAsignatura(),
+            'asignaturas':asignaturas,
+        }
+        return render(request, 'formularios/carreras/reporte_asignaturas.html', contexto) 
+    contexto={
+        'formulario':FormReporteAsignatura(),
+        }
+    return render(request, 'formularios/carreras/reporte_asignaturas.html', contexto) 
 
+@login_required
 def eliminar_asignaturas (request, id):
     pass
 
+@login_required
 def editar_asignaturas (request, id):
     pass
 
-"""class AltaCarrera(CreateView):
-    model = Carreras
-    fields = '__all__'
-    template_name = 'formularios/carreras/form_alta_carrera.html'   
-    success_url = reverse_lazy('altacarrera')
-    extra_context = {
-        'carrera_form': FormAltaCarrera,
-        'asignaturas_form': FormAltaAsignaturas,
-    } 
-    def post(self, request, *args, **kwargs): 
-        self.object = self.get_object
-        data_carrera_form = FormAltaCarrera(request.POST)
-        data_asignaturas_form = FormAltaAsignaturas(request.POST) 
-
-        if data_carrera_form.is_valid() and data_asignaturas_form.is_valid(): 
-            data_carrera_form = data_carrera_form.save(commit=False) 
-            data_carrera_form.asignaturas = data_asignaturas_form.save() 
-            data_carrera_form.save() 
-            messages.success(request, 'La Carrera %s (Plan de estudio: %s) ha sido registrada exitosamente.!' % (data_carrera_form.carrera, data_carrera_form.plan_de_estudio))
-            return redirect (self.get_success_url())
-        else:
-            return self.render_to_response(self.get_context_data(carrera_form=data_carrera_form, asignaturas_form=data_asignaturas_form))
-"""
-  
-  
 #COMISIONES
+@login_required
 def alta_comision(request):
     f_alta_comisiones=FormAltaComisiones(request.POST or None)
     if f_alta_comisiones.is_valid():
@@ -242,22 +238,35 @@ def cargar_asignaturas (request):
     asignaturas = Asignaturas.objects.filter(codigo_id=codigo_id).all()
     print(asignaturas)
     return render(request, 'formularios/comisiones/asignaturas_lista_opciones.html', {'asignaturas': asignaturas})
-    
+
+@login_required   
 def reporte_comisiones(request):
-    if request.method == 'GET':
-        r_comisiones=FormReporteComisiones(request.GET)   
-        if r_comisiones.is_valid():
-            comision=request.GET.get('comision')
-            comision=Comisiones.objects.filter(carrera__icontains=comision)
-            contexto={
-                'formulario': FormReporteComisiones(),
-                'comisiones':comision,
-            }
-            return render(request, 'formularios/comisiones/reporte_comisiones.html', contexto) 
+    reporte_comisiones = Comisiones.objects.all().order_by('codigo', 'anio_academico','semestre_academico','modalidad','comision').values()
+    return render(request, 'formularios/comisiones/reporte_comisiones.html', {'comisiones' : reporte_comisiones})
+
+@login_required   
+def eliminar_comision (request, id): 
+    comision_eliminar=Comisiones.objects.get(id=id)
+    messages.success(request, "La comision %s (%s, %s) fue eliminada" % (comision_eliminar.comision, comision_eliminar.codigo, comision_eliminar.asignatura))
+    comision_eliminar.delete() 
+    return redirect('reportecomision')
+
+@login_required
+def editar_comision (request, id): 
+    comision_editar=Comisiones.objects.get(id=id)
+    if request.method == 'POST':
+        formulario=FormAltaComisiones(request.POST, instance=comision_editar)
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, 'Los datos de la comision %s (%s) han sido actualizados exitosamente.!' % (comision_editar.comision, comision_editar.codigo, comision_editar.asignatura))
+            return redirect('reportecomision')
+        messages.info(request, 'Ningun campo puede estar vacio!') 
     contexto={
-        'formulario':FormReporteComisiones(),
+        'formulario':FormAltaComisiones(
+            instance=comision_editar),  
     }
-    return render(request, 'formularios/comisiones/reporte_comisiones.html',contexto) 
+    return render(request, 'formularios/carreras/form_alta_carrera.html', contexto)
+
 
 
 

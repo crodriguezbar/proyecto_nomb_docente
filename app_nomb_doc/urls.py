@@ -25,4 +25,6 @@ urlpatterns = [
     path('alta_comision/', alta_comision, name='altacomision'),
     path('reporte_comision/', reporte_comisiones, name='reportecomision'),
     path('ajax/cargar_asignaturas/', cargar_asignaturas, name='ajaxcargarasignaturas'),
+    path('eliminar_comision/<id>', eliminar_comision, name='eliminarcomision'),
+    path('editar_comision/<id>', editar_comision, name='editarcomision'),
 ]

@@ -8,33 +8,32 @@
     <div class="container mt-18" style="width: 95%; font-size:14px">
     <form action="" method="GET" class="card p-3 mt-5" autocomplete="on" novalidate> {% csrf_token %}
         <div class="card border-dark p-3"> 
-            <span class="btn btn-secondary mb-4"><strong>REPORTE CARRERAS</strong></span>   
+            <span class="btn btn-secondary mb-4"><strong>REPORTE COMISIONES</strong></span>   
             <br>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th colspan='3'>CARRERA</th>
-                    <th scope="col">PLAN DE ESTUDIO</th>
-                    <th scope="col">TIPO DE CARRERA</th>
                     <th scope="col">CODIGO</th>
-                    <th scope="col">RES. RECTORAL</th>
-                    <th scope="col">CANTIDAD DE ASIGNATURAS</th>
+                    <th colspan='3'>ASIGNATURA</th>
+                    <th scope="col">COMISION</th>
+                    <th scope="col">MODALIDAD</th>
+                    <th scope="col">HORARIO</th>
+                    <th scope="col">FECHA DE CREACION</th>
                     <th scope="col">EDITAR</th>
                     <th scope="col">ELIMINAR</th>
                 </tr>
                 </thead>
-            {% for reporte in reporte_carrera %}
+            {% for reporte in comisiones %}
             <tbody>     
                 <tr>
-                    <th scope="row" style="vertical-align:middle">{{reporte.id}}</th>
-                    <td colspan='3' style="vertical-align:middle">{{reporte.carrera}}</td> 
-                    <td style="vertical-align:middle">{{reporte.plan_de_estudio}}</td>
-                    <td style="vertical-align:middle">{{reporte.tipo_carrera}}</td>
-                    <td style="vertical-align:middle">{{reporte.codigo}}</td>
-                    <td style="vertical-align:middle">{{reporte.resolucion_rectoral}}</td>
-                    <td><a href="{% url 'editarcarrera' reporte.id %}" class="btn btn-outline-warning btn-sm mt-0" style="width:80px"href="#">Editar</td>
-                    <td><a href="{% url 'eliminarcarrera' reporte.id %}" class="btn btn-outline-danger btn-sm mt-0" style="width:80px" href="#">Eliminar</td>
+                    <th scope="row" style="vertical-align:middle">{{reporte.codigo_id}}</th>
+                    <td colspan='3' style="vertical-align:middle">{{reporte.asignatura_id}}</td> 
+                    <td style="vertical-align:middle">{{reporte.comision}}</td>
+                    <td style="vertical-align:middle">{{reporte.modalidad}}</td>
+                    <td style="vertical-align:middle">{{reporte.horario}}</td>
+                    <td style="vertical-align:middle">{{reporte.fecha_creacion}}</td>
+                    <td><a href="{% url 'editarcomision' reporte.id %}" class="btn btn-outline-warning btn-sm mt-0" style="width:80px"href="#">Editar</td>
+                    <td><a href="{% url 'eliminarcomision' reporte.id %}" class="btn btn-outline-danger btn-sm mt-0" style="width:80px" href="#">Eliminar</td>
                 </tr>
             </tbody>
             {% endfor %}
@@ -57,7 +56,6 @@
             </span>
         </div>
         </div>
-        <br>
         <!-- Mensaje desde views.py -->
         {% for message in messages %}
             {% if message.tags == 'success' %}

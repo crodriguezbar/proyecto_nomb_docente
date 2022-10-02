@@ -208,6 +208,10 @@ class FormAsignaturas(forms.ModelForm):
 class FormReporteCarrera (forms.Form):
     carrera=forms.CharField(required=True)
 
+class FormReporteAsignatura (forms.Form):
+    codigo=forms.CharField(required=True)    
+    
+
 #COMISIONES
 class FormAltaComisiones(forms.ModelForm):
     anio_academico=forms.CharField(
@@ -277,8 +281,42 @@ class FormAltaComisiones(forms.ModelForm):
                 pass
         elif self.instance.pk:
             self.fields['asignatura'].queryset = self.instance.codigo.asignatura_set.order_by('asignatura')
-        
- 
 
-class FormReporteComisiones(forms.Form):
-    carrera=forms.CharField(required=True)
+class FormReporteComisiones(forms.ModelForm): 
+    codigo=forms.CharField(
+        label='CARRERA',
+        required=False,
+        max_length=2, 
+        validators=[RegexValidator(r'^[a-zA-ZÀ-ÿ\s]*$', message='Solo letras estan permitidas!')],
+        widget=forms.TextInput(attrs={'placeholder':'carrera'})
+    )
+    anio_academico=forms.CharField(
+        max_length=4,
+        validators=[RegexValidator(r'^[0-9]*$', message='Solo numeros estan permitidos!')],
+        widget=forms.TextInput(attrs={'placeholder':'año academico'}),
+        label='AÑO ACADEMICO',
+        required=False
+    )
+    
+
+    class Meta:
+        model= Comisiones
+        exclude=['fecha_creacion', 'modalidad']
+        labels={
+            'codigo': 'CARRERA',
+            'anio_academico': 'AÑO ACADEMICO',
+            'semestre_academico':'SEMESTRE ACADEMICO',
+        }
+        OPCIONES_SEMESTRE = (
+            ('', 'Seleccione semestre'),
+            ('1° sem', '1° Semestre'),
+            ('2° sem', '2° Semestre'),
+        )
+        widgets={
+            'semestre_academico' : forms.Select(
+                choices=OPCIONES_SEMESTRE,attrs={
+                "required": True,
+                'class': 'form-control',
+                }),
+        }
+    
