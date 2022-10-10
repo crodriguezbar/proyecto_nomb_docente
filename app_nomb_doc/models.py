@@ -18,11 +18,11 @@ class Docentes(models.Model):
     
     # Primera letra mayuscula
     def clean(self):
-        self.nombre = self.nombre.title()
+        self.nombre = (self.nombre).title()
         self.apellido = self.apellido.title() 
         self.titulo_grado = self.titulo_grado.capitalize()
         self.titulo_posgrado = self.titulo_posgrado.capitalize()
-     
+        
     def __str__(self):
         return f'Nombre: {self.nombre} Apellido: {self.apellido} DNI: {self.dni} Alta: {self.fecha_alta}'
     
